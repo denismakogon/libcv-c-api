@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AA3A47782865CB0E0030B49E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA3A47772865CB0E0030B49E /* main.cpp */; };
 		AA3A478C2865CBB50030B49E /* drawing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA3A477F2865CBB20030B49E /* drawing.cpp */; };
 		AA3A478D2865CBB50030B49E /* debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA3A47802865CBB20030B49E /* debug.cpp */; };
 		AA3A478E2865CBB50030B49E /* c_api.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA3A47812865CBB20030B49E /* c_api.cpp */; };
@@ -35,7 +34,6 @@
 
 /* Begin PBXFileReference section */
 		AA3A47742865CB0E0030B49E /* cpp-to-c-api */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "cpp-to-c-api"; sourceTree = BUILT_PRODUCTS_DIR; };
-		AA3A47772865CB0E0030B49E /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		AA3A477E2865CBB20030B49E /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		AA3A477F2865CBB20030B49E /* drawing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = drawing.cpp; sourceTree = "<group>"; };
 		AA3A47802865CBB20030B49E /* debug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = debug.cpp; sourceTree = "<group>"; };
@@ -84,7 +82,6 @@
 		AA3A47762865CB0E0030B49E /* src */ = {
 			isa = PBXGroup;
 			children = (
-				AA3A47772865CB0E0030B49E /* main.cpp */,
 				AA3A47812865CBB20030B49E /* c_api.cpp */,
 				AA3A47822865CBB20030B49E /* classifier.cpp */,
 				AA3A47802865CBB20030B49E /* debug.cpp */,
@@ -168,7 +165,6 @@
 				AA3A47942865CBB50030B49E /* to_string.cpp in Sources */,
 				AA3A47952865CBB50030B49E /* etc.cpp in Sources */,
 				AA3A47962865CBB50030B49E /* files.cpp in Sources */,
-				AA3A47782865CB0E0030B49E /* main.cpp in Sources */,
 				AA3A47902865CBB50030B49E /* image.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -227,10 +223,71 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				"HEADER_SEARCH_PATHS[arch=*]" = /usr/local/opt/opencv/include/opencv4;
 				MACOSX_DEPLOYMENT_TARGET = 11.6;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				"OTHER_LDFLAGS[arch=*]" = (
+					"-I/usr/local/opt/opencv/include/opencv4",
+					"-L/usr/local/opt/opencv/lib",
+					"-lopencv_gapi",
+					"-lopencv_stitching",
+					"-lopencv_alphamat",
+					"-lopencv_aruco",
+					"-lopencv_barcode",
+					"-lopencv_bgsegm",
+					"-lopencv_bioinspired",
+					"-lopencv_ccalib",
+					"-lopencv_dnn_objdetect",
+					"-lopencv_dnn_superres",
+					"-lopencv_dpm",
+					"-lopencv_face",
+					"-lopencv_freetype",
+					"-lopencv_fuzzy",
+					"-lopencv_hfs",
+					"-lopencv_img_hash",
+					"-lopencv_intensity_transform",
+					"-lopencv_line_descriptor",
+					"-lopencv_mcc",
+					"-lopencv_quality",
+					"-lopencv_rapid",
+					"-lopencv_reg",
+					"-lopencv_rgbd",
+					"-lopencv_saliency",
+					"-lopencv_sfm",
+					"-lopencv_stereo",
+					"-lopencv_structured_light",
+					"-lopencv_phase_unwrapping",
+					"-lopencv_superres",
+					"-lopencv_optflow",
+					"-lopencv_surface_matching",
+					"-lopencv_tracking",
+					"-lopencv_highgui",
+					"-lopencv_datasets",
+					"-lopencv_text",
+					"-lopencv_plot",
+					"-lopencv_videostab",
+					"-lopencv_videoio",
+					"-lopencv_viz",
+					"-lopencv_wechat_qrcode",
+					"-lopencv_xfeatures2d",
+					"-lopencv_shape",
+					"-lopencv_ml",
+					"-lopencv_ximgproc",
+					"-lopencv_video",
+					"-lopencv_xobjdetect",
+					"-lopencv_objdetect",
+					"-lopencv_calib3d",
+					"-lopencv_imgcodecs",
+					"-lopencv_features2d",
+					"-lopencv_dnn",
+					"-lopencv_flann",
+					"-lopencv_xphoto",
+					"-lopencv_photo",
+					"-lopencv_imgproc",
+					"-lopencv_core\n",
+				);
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -280,9 +337,70 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				"HEADER_SEARCH_PATHS[arch=*]" = /usr/local/opt/opencv/include/opencv4;
 				MACOSX_DEPLOYMENT_TARGET = 11.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				"OTHER_LDFLAGS[arch=*]" = (
+					"-I/usr/local/opt/opencv/include/opencv4",
+					"-L/usr/local/opt/opencv/lib",
+					"-lopencv_gapi",
+					"-lopencv_stitching",
+					"-lopencv_alphamat",
+					"-lopencv_aruco",
+					"-lopencv_barcode",
+					"-lopencv_bgsegm",
+					"-lopencv_bioinspired",
+					"-lopencv_ccalib",
+					"-lopencv_dnn_objdetect",
+					"-lopencv_dnn_superres",
+					"-lopencv_dpm",
+					"-lopencv_face",
+					"-lopencv_freetype",
+					"-lopencv_fuzzy",
+					"-lopencv_hfs",
+					"-lopencv_img_hash",
+					"-lopencv_intensity_transform",
+					"-lopencv_line_descriptor",
+					"-lopencv_mcc",
+					"-lopencv_quality",
+					"-lopencv_rapid",
+					"-lopencv_reg",
+					"-lopencv_rgbd",
+					"-lopencv_saliency",
+					"-lopencv_sfm",
+					"-lopencv_stereo",
+					"-lopencv_structured_light",
+					"-lopencv_phase_unwrapping",
+					"-lopencv_superres",
+					"-lopencv_optflow",
+					"-lopencv_surface_matching",
+					"-lopencv_tracking",
+					"-lopencv_highgui",
+					"-lopencv_datasets",
+					"-lopencv_text",
+					"-lopencv_plot",
+					"-lopencv_videostab",
+					"-lopencv_videoio",
+					"-lopencv_viz",
+					"-lopencv_wechat_qrcode",
+					"-lopencv_xfeatures2d",
+					"-lopencv_shape",
+					"-lopencv_ml",
+					"-lopencv_ximgproc",
+					"-lopencv_video",
+					"-lopencv_xobjdetect",
+					"-lopencv_objdetect",
+					"-lopencv_calib3d",
+					"-lopencv_imgcodecs",
+					"-lopencv_features2d",
+					"-lopencv_dnn",
+					"-lopencv_flann",
+					"-lopencv_xphoto",
+					"-lopencv_photo",
+					"-lopencv_imgproc",
+					"-lopencv_core\n",
+				);
 				SDKROOT = macosx;
 			};
 			name = Release;
