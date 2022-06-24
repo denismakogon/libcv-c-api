@@ -5,15 +5,15 @@
 //  Created by Denis Makogon on 17.06.2022.
 //
 
-#include "includes/dnn.hpp"
-#include "includes/drawing.hpp"
-#include "includes/classifier.hpp"
-#include "includes/etc.hpp"
-#include "includes/image.hpp"
-#include "includes/to_string.hpp"
-#include "includes/files.hpp"
+#include "include/dnn.hpp"
+#include "include/drawing.hpp"
+#include "include/classifier.hpp"
+#include "include/etc.hpp"
+#include "include/image.hpp"
+#include "include/to_string.hpp"
+#include "include/files.hpp"
 
-#include "includes/data_types.h"
+#include "include/data_types.h"
 
 
 using namespace std;
