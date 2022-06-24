@@ -14,14 +14,16 @@ jobs:
       matrix:
         os: [macos-latest, ubuntu-20.04]
         include:
-          - os: ubuntu
-            TARGET: ubuntu-20.04
+          - os: ubuntu-20.04
+            TARGET: ubuntu
           - os: macos-latest
             TARGET: apple-darwin
+
     steps:
       - name: 'Check out repository'
         uses: actions/checkout@v2
         with:
           fetch-depth: 1
       - name: 'install prerequisites'
-        run: ./scripts/install-dependencies-on-${TARGET}.sh
+        shell: bash
+        run: /bin/bash scripts/install-dependencies-on-${{ matrix.TARGET }}.sh
