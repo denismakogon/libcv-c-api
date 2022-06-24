@@ -1,4 +1,4 @@
-#  Attempt to build a car speed detection tool
+#  C++ to C API to Java API
 
 The purpose of this project to showcase the abilities to degrade C++ API to C API to make them consumable in Java using Project Panama Foreign Function & Memory API.
 
