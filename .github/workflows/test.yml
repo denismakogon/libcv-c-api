@@ -12,18 +12,44 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-20.04]
+        os: [macos-latest, ubuntu-latest]
         include:
-          - os: ubuntu-20.04
+          - os: ubuntu-latest
             TARGET: ubuntu
           - os: macos-latest
-            TARGET: apple-darwin
+            TARGET: macos
 
     steps:
       - name: 'Check out repository'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 1
+
+      - name: Set up Homebrew
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+        with:
+          test-bot: false
+
+      - name: 'configure Homebrew cache'
+        id: cache
+        uses: actions/cache@v3.0.3
+        with:
+          path: ${{ steps.set-up-homebrew.outputs.gems-path }}
+          key: ${{ runner.os }}-rubygems-${{ steps.set-up-homebrew.outputs.gems-hash }}
+          restore-keys: ${{ runner.os }}-rubygems-
+
       - name: 'install prerequisites'
         shell: bash
-        run: /bin/bash scripts/install-dependencies-on-${{ matrix.TARGET }}.sh
+        run: |
+          brew install gcc
+          brew install opencv
+          brew install dlib
+          brew install pkg-config
+        if: steps.cache.outputs.cache-hit != 'true'
+
+      - name: 'check libs'
+        shell: bash
+        run: |
+          pkg-config --modversion opencv4
+          pkg-config --modversion dlib-1
