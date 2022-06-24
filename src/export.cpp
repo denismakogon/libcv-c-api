@@ -24,7 +24,9 @@ void exportVectorOf(vector<Rect>& detections, ExportableRectangle* result) {
     for(int i = 0; i < detections.size(); i++) {
         Rect r = detections[i];
         result[i] = (ExportableRectangle) {
-            .x = r.x, .y = r.y,
+            .x0 = r.x, .y0 = r.y,
+            .x1 = r.x + r.width-1,
+            .y1 = r.y + r.height-1,
             .width = r.width,
             .height = r.height
         };
@@ -44,7 +46,9 @@ void exportVectorOf(vector<Rect>& intermediate, PositionalFrameObjectDetectionDe
                         .className = strdup("unknown"),
                         .confidence = 0,
                         .rect = (ExportableRectangle) {
-                            .x = r.x, .y = r.y,
+                            .x0 = r.x, .y0 = r.y,
+                            .x1 = r.x + r.width-1,
+                            .y1 = r.y + r.height-1,
                             .width = r.width,
                             .height = r.height
                         }

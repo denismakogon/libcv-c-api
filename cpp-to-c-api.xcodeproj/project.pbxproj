@@ -82,6 +82,7 @@
 		AA3A47762865CB0E0030B49E /* src */ = {
 			isa = PBXGroup;
 			children = (
+				AA3A47862865CBB30030B49E /* includes */,
 				AA3A47812865CBB20030B49E /* c_api.cpp */,
 				AA3A47822865CBB20030B49E /* classifier.cpp */,
 				AA3A47802865CBB20030B49E /* debug.cpp */,
@@ -91,7 +92,6 @@
 				AA3A47852865CBB30030B49E /* export.cpp */,
 				AA3A478B2865CBB50030B49E /* files.cpp */,
 				AA3A47832865CBB20030B49E /* image.cpp */,
-				AA3A47862865CBB30030B49E /* includes */,
 				AA3A47892865CBB40030B49E /* to_string.cpp */,
 				AA3A47882865CBB40030B49E /* video.cpp */,
 			);

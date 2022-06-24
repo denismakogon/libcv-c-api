@@ -15,7 +15,9 @@ struct ExportableMat {
 };
 
 struct ExportableRectangle {
-    int x, y, width, height;
+    int x0, y0;
+    int x1, y1;
+    int width, height;
 };
 
 struct ExportableRectangles {

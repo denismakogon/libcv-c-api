@@ -114,8 +114,10 @@ void formatDetections(Mat& frame, vector<Mat>& outs, Net& net, vector<ObjectDete
                         .className = strdup(cocoaClasses[classID].c_str()),
                         .confidence = confidence,
                         .rect = (ExportableRectangle) {
-                            .x = left,
-                            .y = top,
+                            .x0 = left,
+                            .y0 = top,
+                            .x1 = left + width-1,
+                            .y1 = top + height-1,
                             .width = width,
                             .height = height
                         }
@@ -148,8 +150,10 @@ void formatDetections(Mat& frame, vector<Mat>& outs, Net& net, vector<ObjectDete
                         .className = strdup(cocoaClasses[classIdPoint.x].c_str()),
                         .confidence = confidence,
                         .rect = (ExportableRectangle) {
-                            .x = left,
-                            .y = top,
+                            .x0 = left,
+                            .y0 = top,
+                            .x1 = left + width-1,
+                            .y1 = top + height-1,
                             .width = width,
                             .height = height
                         }
@@ -215,7 +219,7 @@ int runDetectionsOnImage(string imagePath, string modelPath, string modelWeights
     sort(
          ds.begin(), ds.end(),
          [](ObjectDetectionDescriptor a, ObjectDetectionDescriptor b) {
-             return a.rect.x <= b.rect.x;
+             return a.rect.x0 <= b.rect.x0;
          }
      );
     pds = (PositionalFrameObjectDetectionDescriptor) {

@@ -49,11 +49,10 @@ int drawDetectionsOnImage(string sourceImagePath, string finalImagePath,
         Scalar color = colors[i%8];
         ObjectDetectionDescriptor d = pds.detections[i];
         ExportableRectangle r = d.rect;
-        rectangle(result, Point(cvRound(r.x * scale), cvRound(r.y * scale)),
-                  Point(cvRound((r.x + r.width-1) * scale),
-                        cvRound((r.y + r.height-1) * scale)),
+        rectangle(result, Point(cvRound(r.x0 * scale), cvRound(r.y0 * scale)),
+                  Point(cvRound((r.x0 + r.width-1) * scale),
+                        cvRound((r.y0 + r.height-1) * scale)),
                   color, 3, 8, 0);
-
     }
     
     debug(format("done with drawDetectionsOnImage, retCode: %d", retCode));

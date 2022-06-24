@@ -19,8 +19,10 @@ using namespace cv;
 /*-----------------------------------------------------------------------*/
 
 string toString(ExportableRectangle& object) {
-    return format("x=%d y=%d width=%d heights=%d",
-                  object.x, object.y, object.width, object.height);
+    return format("X=(%d, %d) Y=(%d,%d) width=%d heights=%d",
+                  object.x0, object.y0,
+                  object.x1, object.y1,
+                  object.width, object.height);
 }
 
 string toString(ObjectDetectionDescriptor& object) {
