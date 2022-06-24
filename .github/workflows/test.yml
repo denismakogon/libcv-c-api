@@ -25,6 +25,12 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Set up Homebrew
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+        with:
+          test-bot: false
+
       - name: 'configure Homebrew cache'
         id: cache
         uses: actions/cache@v3.0.3
