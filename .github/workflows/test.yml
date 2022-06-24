@@ -17,7 +17,7 @@ jobs:
           - os: ubuntu-latest
             TARGET: ubuntu
           - os: macos-latest
-            TARGET: apple-darwin
+            TARGET: macos
 
     steps:
       - name: 'Check out repository'
