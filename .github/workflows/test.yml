@@ -35,16 +35,21 @@ jobs:
         id: cache
         uses: actions/cache@v3.0.3
         with:
-          path: |
-            /usr/local/Homebrew
-            /usr/local/Cellar
-            /usr/local/Frameworks
-            /usr/local/bin
-            /usr/local/opt
-          key: brew-${{ hashFiles('scripts/install-dependencies-on-${{ matrix.TARGET }}.sh') }}
-          restore-keys: brew-
+          path: ${{ steps.set-up-homebrew.outputs.gems-path }}
+          key: ${{ runner.os }}-rubygems-${{ steps.set-up-homebrew.outputs.gems-hash }}
+          restore-keys: ${{ runner.os }}-rubygems-
 
       - name: 'install prerequisites'
         shell: bash
-        run: /bin/bash scripts/install-dependencies-on-${{ matrix.TARGET }}.sh
+        run: |
+          brew install gcc
+          brew install opencv
+          brew install dlib
+          brew install pkg-config
         if: steps.cache.outputs.cache-hit != 'true'
+
+      - name: 'check libs'
+        shell: bash
+        run: |
+          pkg-config --modversion opencv4
+          pkg-config --modversion dlib-1
