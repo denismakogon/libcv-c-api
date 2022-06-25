@@ -49,6 +49,8 @@ jobs:
           brew install opencv
           brew install dlib
           brew install pkg-config
+          brew link opencv
+          brew link dlib
 
       - name: 'check libs'
         shell: bash
