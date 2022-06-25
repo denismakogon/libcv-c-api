@@ -57,3 +57,8 @@ jobs:
         run: |
           pkg-config --modversion opencv4
           pkg-config --modversion dlib-1
+
+      - name: 'build a package'
+        shell: bash
+        run: |
+          /bin/bash scripts/build.sh test
