@@ -49,23 +49,22 @@ jobs:
           brew link opencv
           brew link dlib
 
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y%m%d')"
+
       - name: 'build a package'
         shell: bash
         run: |
-          /bin/bash scripts/package.sh latest
+          /bin/bash scripts/package.sh ${{ steps.date.outputs.date }}
 
-      - name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
-
-# TODO: add scoped GITHUB_RELEASE_TOKE, then uncomment
-#      - name: 'make a release'
-#        uses: marvinpinto/action-automatic-releases@latest
-#        with:
-#          repo_token: ${{ secrets.GITHUB_RELEASE_TOKE }}
-#          automatic_release_tag: ${{ steps.date.outputs.date }}
-#          prerelease: false
-#          title: libopencv-c-api ${{ steps.date.outputs.date }} release
-#          files: |
-#            LICENSE
-#            build/*.tar.gz
+      - name: 'make a release'
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GH_RELEASE_TOKEN }}
+          automatic_release_tag: ${{ steps.date.outputs.date }}
+          prerelease: false
+          title: libopencv-c-api ${{ steps.date.outputs.date }} release
+          files: |
+            LICENSE
+            build/*.tar.gz
