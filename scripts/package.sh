@@ -2,7 +2,7 @@
 
 set -xe
 
-version=${1:-"0.1"}
+version=${1:-"$(date +'%Y.%m.%d')"}
 build_dir=${2:-"build"}
 
 /bin/bash scripts/build.sh "${version}" "${build_dir}"

@@ -58,7 +58,11 @@ jobs:
           pkg-config --modversion opencv4
           pkg-config --modversion dlib-1
 
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y.%m.%d')"
+
       - name: 'build a package'
         shell: bash
         run: |
-          /bin/bash scripts/build.sh test
+          /bin/bash scripts/build.sh ${{ steps.date.outputs.date }}
