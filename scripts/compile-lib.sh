@@ -2,8 +2,6 @@
 
 set -xe
 
-version=${1:-"$(date +'%Y.%m.%d')"}
-build_dir=${2:-"build"}
 platform="linux"
 arch=$(uname -m)
 lib_extension="so"
@@ -11,9 +9,14 @@ if [[ $OSTYPE == 'darwin'* ]]; then
   lib_extension="dylib"
   platform="macos"
 fi
-libname="libopencv_c_api-${version}.${platform}.${arch}.${lib_extension}"
 
-rm -fr "${build_dir:?}/*"
+
+version=${1:-"$(date +'%Y.%m.%d')"}
+build_dir=${2:-"build"}
+version_no_dots=$(echo -e "${version}" | tr -d '.')
+libname=${3:-"libcv_c_api.${version_no_dots}.${platform}.${arch}.${lib_extension}"}
+
+rm -fr "${build_dir}"
 mkdir -p "${build_dir}/include"
 mkdir -p "${build_dir}/lib"
 
