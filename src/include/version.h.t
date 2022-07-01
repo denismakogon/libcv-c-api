@@ -1,4 +1,7 @@
 //
+// Generated from version.h.t template
+//
+//
 //  version.h
 //  cpp-to-c-api
 //
