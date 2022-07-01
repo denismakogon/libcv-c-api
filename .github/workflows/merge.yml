@@ -4,6 +4,10 @@ on:
     branches: [ main ]
     tags:
       - "v*"
+    paths:
+      - 'src/*'
+      - 'scripts/*'
+
 jobs:
   build-merge-release:
     runs-on: ${{ matrix.os }}
@@ -19,12 +23,6 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 1
-
-      - name: Set up Homebrew
-        id: set-up-homebrew
-        uses: Homebrew/actions/setup-homebrew@master
-        with:
-          test-bot: false
 
       - name: Get current date
         id: date
