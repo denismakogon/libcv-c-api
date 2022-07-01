@@ -41,13 +41,18 @@ jobs:
           key: ${{ runner.os }}-rubygems-${{ steps.set-up-homebrew.outputs.gems-hash }}
           restore-keys: ${{ runner.os }}-rubygems-
 
-      - name: 'install prerequisites: common'
+      - name: 'install prerequisites'
         shell: bash
         run: |
           brew install gcc
           brew install opencv
           brew install dlib
           brew install pkg-config
+        if: ${{ steps.cache.outputs.cache-hit != 'true' }}
+
+      - name: 'link libraries'
+        shell: bash
+        run: |
           brew link opencv
           brew link dlib
           pkg-config --modversion opencv4
