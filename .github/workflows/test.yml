@@ -3,7 +3,7 @@ name: Build and test
 on:
   push:
     branches-ignore:
-      - master
+      - main
       - pr/*
   workflow_dispatch:
 
@@ -12,10 +12,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest]
+        os: [macos-latest]
         include:
-          - os: ubuntu-latest
-            TARGET: ubuntu
           - os: macos-latest
             TARGET: macos
 
@@ -35,21 +33,35 @@ jobs:
         id: cache
         uses: actions/cache@v3.0.3
         with:
-          path: ${{ steps.set-up-homebrew.outputs.gems-path }}
+          path: |
+            /usr/local/Homebrew
+            /usr/local/Cellar
+            /usr/local/Frameworks
           key: ${{ runner.os }}-rubygems-${{ steps.set-up-homebrew.outputs.gems-hash }}
           restore-keys: ${{ runner.os }}-rubygems-
 
-      - name: 'install prerequisites'
+      - name: 'install prerequisites: common'
         shell: bash
         run: |
           brew install gcc
           brew install opencv
           brew install dlib
           brew install pkg-config
-        if: steps.cache.outputs.cache-hit != 'true'
-
-      - name: 'check libs'
-        shell: bash
-        run: |
+          brew link opencv
+          brew link dlib
           pkg-config --modversion opencv4
           pkg-config --modversion dlib-1
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y.%m.%d')"
+
+      - name: 'package compiled library'
+        shell: bash
+        run: |
+          /bin/bash scripts/package-lib.sh ${{ steps.date.outputs.date }}
+
+      - name: 'package library sources'
+        shell: bash
+        run: |
+          /bin/bash scripts/package-sources.sh ${{ steps.date.outputs.date }}

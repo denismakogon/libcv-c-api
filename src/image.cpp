@@ -10,10 +10,10 @@
 #include "opencv2/imgproc.hpp"
 #include "opencv2/imgcodecs.hpp"
 
-#include "includes/data_types.h"
-#include "includes/debug.hpp"
-#include "includes/etc.hpp"
-#include "includes/files.hpp"
+#include "include/data_types.h"
+#include "include/debug.hpp"
+#include "include/etc.hpp"
+#include "include/files.hpp"
 
 
 using namespace std;

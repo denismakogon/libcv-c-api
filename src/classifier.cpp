@@ -19,14 +19,14 @@
 #include "opencv2/dnn.hpp"
 #include "opencv2/objdetect.hpp"
 
-#include "includes/data_types.h"
+#include "include/data_types.h"
 
-#include "includes/debug.hpp"
-#include "includes/etc.hpp"
-#include "includes/image.hpp"
-#include "includes/files.hpp"
-#include "includes/export.hpp"
-#include "includes/video.hpp"
+#include "include/debug.hpp"
+#include "include/etc.hpp"
+#include "include/image.hpp"
+#include "include/files.hpp"
+#include "include/export.hpp"
+#include "include/video.hpp"
 
 using namespace std;
 using namespace cv;

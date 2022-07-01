@@ -15,14 +15,14 @@
 #include "opencv2/dnn.hpp"
 #include "opencv2/objdetect.hpp"
 
-#include "includes/data_types.h"
+#include "include/data_types.h"
 
-#include "includes/debug.hpp"
-#include "includes/etc.hpp"
-#include "includes/export.hpp"
-#include "includes/image.hpp"
-#include "includes/video.hpp"
-#include "includes/files.hpp"
+#include "include/debug.hpp"
+#include "include/etc.hpp"
+#include "include/export.hpp"
+#include "include/image.hpp"
+#include "include/video.hpp"
+#include "include/files.hpp"
 
 #include <iostream>
 #include <cstdio>

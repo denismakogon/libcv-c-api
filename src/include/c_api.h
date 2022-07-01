@@ -8,7 +8,7 @@
 #ifndef c_api_h
 #define c_api_h
 
-#include "includes/data_types.h"
+#include "include/data_types.h"
 
 #include <stdbool.h>
 

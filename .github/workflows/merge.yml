@@ -1,0 +1,47 @@
+name: build merge release
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - "v*"
+jobs:
+  build-merge-release:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ macos-latest ]
+        include:
+          - os: macos-latest
+            TARGET: macos
+
+    steps:
+      - name: 'Check out repository'
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+
+      - name: Set up Homebrew
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+        with:
+          test-bot: false
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y.%m.%d')"
+
+      - name: 'package library sources'
+        shell: bash
+        run: |
+          /bin/bash scripts/package-sources.sh ${{ steps.date.outputs.date }}
+
+      - name: 'make a release'
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GH_RELEASE_TOKEN }}
+          automatic_release_tag: ${{ steps.date.outputs.date }}
+          prerelease: false
+          title: libcv-c-api ${{ steps.date.outputs.date }} release
+          files: |
+            LICENSE
+            build/*.tar.gz
