@@ -59,6 +59,8 @@
 		AA3A47892865CBB40030B49E /* to_string.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = to_string.cpp; sourceTree = "<group>"; };
 		AA3A478A2865CBB40030B49E /* etc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = etc.cpp; sourceTree = "<group>"; };
 		AA3A478B2865CBB50030B49E /* files.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = files.cpp; sourceTree = "<group>"; };
+		AA422C9E286F2BCD00D58354 /* version.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
+		AA422CA1286F2F3A00D58354 /* version.h.t */ = {isa = PBXFileReference; lastKnownFileType = text; path = version.h.t; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +89,8 @@
 				AA249B6A286636B5001B3CA7 /* image.hpp */,
 				AA249B63286636B4001B3CA7 /* to_string.hpp */,
 				AA249B65286636B4001B3CA7 /* video.hpp */,
+				AA422C9E286F2BCD00D58354 /* version.h */,
+				AA422CA1286F2F3A00D58354 /* version.h.t */,
 			);
 			path = include;
 			sourceTree = "<group>";

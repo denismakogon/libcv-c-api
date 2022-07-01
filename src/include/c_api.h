@@ -9,6 +9,7 @@
 #define c_api_h
 
 #include "include/data_types.h"
+#include "include/version.h"
 
 #include <stdbool.h>
 
