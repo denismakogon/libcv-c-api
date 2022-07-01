@@ -49,10 +49,6 @@ jobs:
           brew install pkg-config
           brew link opencv
           brew link dlib
-
-      - name: 'check libs'
-        shell: bash
-        run: |
           pkg-config --modversion opencv4
           pkg-config --modversion dlib-1
 
@@ -60,7 +56,12 @@ jobs:
         id: date
         run: echo "::set-output name=date::$(date +'%Y.%m.%d')"
 
-      - name: 'build a package'
+      - name: 'package compiled library'
         shell: bash
         run: |
-          /bin/bash scripts/build.sh ${{ steps.date.outputs.date }}
+          /bin/bash scripts/package-lib.sh ${{ steps.date.outputs.date }}
+
+      - name: 'package library sources'
+        shell: bash
+        run: |
+          /bin/bash scripts/package-sources.sh ${{ steps.date.outputs.date }}
