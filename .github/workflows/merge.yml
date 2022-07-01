@@ -64,13 +64,17 @@ jobs:
 
       - name: 'package compiled library'
         shell: bash
+        env:
+          IN_CI: true
         run: |
           /bin/bash scripts/package-lib.sh ${{ steps.date.outputs.date }}
 
       - name: 'package library sources'
         shell: bash
+        env:
+          IN_CI: true
         run: |
-          /bin/bash scripts/package-sources.sh
+          /bin/bash scripts/package-sources.sh  ${{ steps.date.outputs.date }}
 
       - name: 'make a release'
         uses: marvinpinto/action-automatic-releases@latest

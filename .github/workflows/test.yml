@@ -70,4 +70,4 @@ jobs:
       - name: 'package library sources'
         shell: bash
         run: |
-          /bin/bash scripts/package-sources.sh
+          /bin/bash scripts/package-sources.sh ${{ steps.date.outputs.date }}

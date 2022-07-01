@@ -14,11 +14,13 @@ fi
 version=${1:-"$(date +'%Y.%m.%d')"}
 build_dir=${2:-"build"}
 version_no_dots=$(echo -e "${version}" | tr -d '.')
-libname=${3:-"libcv_c_api.${version_no_dots}.${platform}.${arch}.${lib_extension}"}
+libname=${3:-"libcv-c-api.${version_no_dots}.${platform}.${arch}.${lib_extension}"}
 
 rm -fr "${build_dir}"
 mkdir -p "${build_dir}/include"
 mkdir -p "${build_dir}/lib"
+
+./scripts/patch-version.sh "${version}"
 
 # shellcheck disable=SC2046
 g++ -I src/ $(pkg-config --cflags --libs opencv4) \
@@ -28,3 +30,4 @@ g++ -I src/ $(pkg-config --cflags --libs opencv4) \
 
 cp "src/include/c_api.h" "${build_dir}/include/c_api.h"
 cp "src/include/data_types.h" "${build_dir}/include/data_types.h"
+cp "src/include/version.h" "${build_dir}/include/version.h"
