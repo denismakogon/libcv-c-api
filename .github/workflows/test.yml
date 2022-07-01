@@ -42,10 +42,19 @@ jobs:
           key: ${{ runner.os }}-rubygems-${{ steps.set-up-homebrew.outputs.gems-hash }}
           restore-keys: ${{ runner.os }}-rubygems-
 
-      - name: 'install prerequisites'
-        shell: bash
+      - name: 'install prerequisites: ubuntu'
+        if: ${{ matrix.TARGET == 'ubuntu' }}
+        run: |
+          sudo apt-get update && sudo apt-get install build-essential -qy --no-install-recommends
+
+      - name: 'install prerequisites: macos'
+        if: ${{ matrix.TARGET == 'ubuntu' }}
         run: |
           brew install gcc
+
+      - name: 'install prerequisites: common'
+        shell: bash
+        run: |
           brew install opencv
           brew install dlib
           brew install pkg-config
