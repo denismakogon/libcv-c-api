@@ -4,18 +4,18 @@ set -xe
 
 model_size=${1:-"yolov5x"}
 
-rm -fr /tmp/YOLOv5
-mkdir -p /tmp/YOLOv5
-git clone https://github.com/ultralytics/yolov5.git /tmp/YOLOv5
+base_dir=${2:-"/tmp/YOLOv5"}
 
-python3 -mvenv /tmp/YOLOv5/.venv && source /tmp/YOLOv5/.venv/bin/activate
-pip install -r /tmp/YOLOv5/requirements.txt
-pip install onnx
+rm -fr "${base_dir}"
+mkdir -p "${base_dir}"
+git clone https://github.com/ultralytics/yolov5.git "${base_dir}"
 
-curl -vL "https://github.com/ultralytics/yolov5/releases/download/v6.1/${model_size}.pt" -o "/tmp/YOLOv5/models/${model_size}.pt"
-python /tmp/YOLOv5/export.py --weights /tmp/YOLOv5/models/yolov5x.pt --include onnx
+python3 -mvenv "${base_dir}/.venv"
+curl -vL "https://github.com/ultralytics/yolov5/releases/download/v6.1/${model_size}.pt" -o "${base_dir}/models/${model_size}.pt"
 
-pip3 install onnx-simplifier
-onnxsim "/tmp/YOLOv5/models/${model_size}.onnx" "/tmp/YOLOv5/models/${model_size}.simplified.onnx"
+${base_dir}/.venv/bin/pip install -r ${base_dir}/requirements.txt
+${base_dir}/.venv/bin/pip install onnx onnx-simplifier
 
-deactivate
+${base_dir}/.venv/bin/python "${base_dir}/export.py" --weights "${base_dir}/models/${model_size}.pt" --include onnx
+
+${base_dir}/.venv/bin/onnxsim "${base_dir}/models/${model_size}.onnx" "${base_dir}/models/simplified.onnx"

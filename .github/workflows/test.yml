@@ -38,6 +38,7 @@ jobs:
             /usr/local/Homebrew
             /usr/local/Cellar
             /usr/local/Frameworks
+            /tmp/YOLOv5
           key: ${{ runner.os }}-rubygems-${{ steps.set-up-homebrew.outputs.gems-hash }}
           restore-keys: ${{ runner.os }}-rubygems-
 
@@ -58,6 +59,12 @@ jobs:
           pkg-config --modversion opencv4
           pkg-config --modversion dlib-1
 
+      - name: 'compiling simplified up ONNX model'
+        shell: bash
+        run: |
+          /bin/bash scripts/compile-yolo-onnx.sh yolov5s
+        if: ${{ steps.cache.outputs.cache-hit != 'true' }}
+
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y.%m.%d')"
@@ -71,11 +78,6 @@ jobs:
         shell: bash
         run: |
           /bin/bash scripts/package-sources.sh ${{ steps.date.outputs.date }}
-
-      - name: 'setting up ONNX model'
-        shell: bash
-        run: |
-          /bin/bash scripts/compile-yolo-onnx.sh
 
       - name: 'testing files API'
         shell: bash
@@ -95,25 +97,26 @@ jobs:
           /bin/bash scripts/compile-test.sh tests/test_image.cpp
           ./build/tests/test_image.cpp.binary tests/data/cars-on-a-highway.jpeg
 
-#      - name: 'testing video API'
-#        shell: bash
-#        run: |
-#          /bin/bash scripts/compile-test.sh tests/test_image.cpp
-#          ./build/tests/test_video.cpp.binary [video-path]
-
-      - name: 'setting up YOLOv5'
+      - name: 'testing video API'
         shell: bash
         run: |
-          /bin/bash scripts/compile-yolo-onnx.sh
+          /bin/bash scripts/compile-test.sh tests/test_image.cpp
+          ./build/tests/test_video.cpp.binary tests/data/cars-passing-by.mp4 tests/data/cars-on-a-highway.jpeg
 
       - name: 'testing DNN on image API'
         shell: bash
         run: |
           /bin/bash scripts/compile-test.sh tests/test_dnn_on_images.cpp
-          ./build/tests/test_dnn_on_images.cpp.binary /tmp/YOLOv5/models/yolov5x.simplified.onnx tests/data/coco.names tests/data/cars-on-a-highway.jpeg
+          ./build/tests/test_dnn_on_images.cpp.binary /tmp/YOLOv5/models/simplified.onnx tests/data/coco.names tests/data/cars-on-a-highway.jpeg
+
+      - name: 'testing DNN on image API'
+        shell: bash
+        run: |
+          /bin/bash scripts/compile-test.sh tests/test_drawing.cpp
+          ./build/tests/test_drawing.cpp.binary /tmp/YOLOv5/models/simplified.onnx tests/data/coco.names tests/data/cars-on-a-highway.jpeg
 
 #      - name: 'testing DNN on video API'
 #        shell: bash
 #        run: |
 #          /bin/bash scripts/compile-test.sh test_dnn_on_images.cpp
-#          ./build/test_dnn_on_images.cpp.binary /tmp/YOLOv5/models/yolov5x.onnx tests/data/coco.names tests/data/cars-on-a-highway.jpeg
+#          ./build/test_dnn_on_images.cpp.binary /tmp/YOLOv5/models/simplified.onnx tests/data/coco.names tests/data/cars-passing-by.mp4

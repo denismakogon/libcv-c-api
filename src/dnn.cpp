@@ -124,7 +124,8 @@ void formatDetections(Mat& frame, vector<Mat>& outs, Net& net, vector<ObjectDete
     debug("in formatDetections");
     vector<int> outLayers = net.getUnconnectedOutLayers();
     string outLayerType = net.getLayer(outLayers[0])->type;
-        
+    debug(format("original dimentions (h x w): (%d, %d)", frame.rows, frame.cols));
+    
     if (outLayerType == "DetectionOutput") {
         for (size_t k = 0; k < outs.size(); k++) {
             float* data = (float*)outs[k].data;
@@ -151,8 +152,7 @@ void formatDetections(Mat& frame, vector<Mat>& outs, Net& net, vector<ObjectDete
                         width  = right - left + 1;
                         height = bottom - top + 1;
                     }
-                    
-                    ds.push_back((ObjectDetectionDescriptor) {
+                    ObjectDetectionDescriptor ddd = {
                         .className = strdup(cocoClasses[classID].c_str()),
                         .confidence = confidence,
                         .rect = (ExportableRectangle) {
@@ -163,7 +163,9 @@ void formatDetections(Mat& frame, vector<Mat>& outs, Net& net, vector<ObjectDete
                             .width = width,
                             .height = height
                         }
-                    });
+                    };
+                    debug(toString(ddd));
+                    ds.push_back(ddd);
                 }
             }
         }
@@ -200,6 +202,7 @@ void formatDetections(Mat& frame, vector<Mat>& outs, Net& net, vector<ObjectDete
                             .height = height
                         }
                     };
+                    debug(toString(ddd));
                     ds.push_back(ddd);
                 }
             }
@@ -209,6 +212,9 @@ void formatDetections(Mat& frame, vector<Mat>& outs, Net& net, vector<ObjectDete
         float *data = (float*) outs[0].data;
         const int dimensions = 85;
         const int rows = 25200;
+        float xFactor = frame.cols / inputSize;
+        float yFactor = frame.rows / inputSize;
+        debug(format("scale factor (x x y): (%f, %f)", xFactor, yFactor));
         for (int i = 0; i < rows; ++i) {
             float confidence = data[4];
             float * classes_scores = data + 5;
@@ -222,10 +228,10 @@ void formatDetections(Mat& frame, vector<Mat>& outs, Net& net, vector<ObjectDete
                     checkElementByIndexAt(cocoClasses, classIdPoint.x);
 
             if (isMatch) {
-                int width = data[2];
-                int height = data[3];
-                int left = data[0] - width / 2;
-                int top = data[1] - height / 2;
+                float width = data[2];
+                float height = data[3];
+                int left = int((data[0] - width / 2) * xFactor);
+                int top = int((data[1] - height / 2) * yFactor);
                 
                 ObjectDetectionDescriptor ddd = (ObjectDetectionDescriptor) {
                     .className = strdup(cocoClasses[classIdPoint.x].c_str()),
@@ -233,10 +239,10 @@ void formatDetections(Mat& frame, vector<Mat>& outs, Net& net, vector<ObjectDete
                     .rect = (ExportableRectangle) {
                         .x0 = left,
                         .y0 = top,
-                        .x1 = left + width,
-                        .y1 = top + height,
-                        .width = width,
-                        .height = height
+                        .x1 = left + int(width),
+                        .y1 = top + int(height),
+                        .width = int(width),
+                        .height = int(height)
                     }
                 };
                 index++;

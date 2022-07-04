@@ -38,12 +38,5 @@ string toString(ObjectDetectionDescriptor& object) {
 }
 
 string toString(PositionalFrameObjectDetectionDescriptor& object) {
-    debug("in toString(PositionalFrameObjectDetectionDescriptor&)");
-    string res = "";
-    for (int i = 0; i < object.size; i++) {
-        debug(format("%d ", i) + toString(object.detections[i]));
-        res += toString(object.detections[i]);
-    }
-    debug("done with toString(PositionalFrameObjectDetectionDescriptor&)");
-    return format("position: %d, detections: %s", object.position, res.c_str());
+    return format("position: %d, number of detections: %lu", object.position, object.size);
 }

@@ -13,9 +13,6 @@
 #include "include/data_types.h"
 #include "include/dnn.hpp"
 #include "include/to_string.hpp"
-#include "include/debug.hpp"
-#include "include/print.hpp"
-#include "include/drawing.hpp"
 
 
 using namespace std;
@@ -41,8 +38,8 @@ int main(int argc, char* argv[]) {
         puts("Test [runDetectionsOnImageONNX] failed!");
         exit(1);
     }
-    drawDetectionsOnImage(imagePath, imagePath + ".final.jpeg", pds);
-    
+    assert(pds.size > 0);
+    assert(pds.detections != 0);
 
     retCode = runDetectionsOnImageONNX("/tmp/blah.jpeg", onnxModel, cocoClasses, ds);
     if (retCode != -1) {

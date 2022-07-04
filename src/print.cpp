@@ -28,13 +28,5 @@ void print(ObjectDetectionDescriptor& object) {
 }
 
 void print(PositionalFrameObjectDetectionDescriptor& object) {
-    debug("in print(PositionalFrameObjectDetectionDescriptor)");
-    puts(format("position: %d, detections number: %lu, detections:",
-                object.position, object.size).c_str());
-    for (auto i = 0; i < object.size; i++) {
-        printf("idx=%d ", i);
-        print(object.detections[i]);
-    }
-
-    debug("done with print(PositionalFrameObjectDetectionDescriptor)");
+    puts(toString(object).c_str());
 }
