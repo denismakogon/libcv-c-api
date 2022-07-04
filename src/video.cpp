@@ -50,4 +50,3 @@ int readAllFrames(string videoFilePath, vector<Mat>& frames) {
     debug(format("done with readAllFrames, retCode: %d", 0));
     return 0;
 }
-

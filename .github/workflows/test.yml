@@ -71,3 +71,49 @@ jobs:
         shell: bash
         run: |
           /bin/bash scripts/package-sources.sh ${{ steps.date.outputs.date }}
+
+      - name: 'setting up ONNX model'
+        shell: bash
+        run: |
+          /bin/bash scripts/compile-yolo-onnx.sh
+
+      - name: 'testing files API'
+        shell: bash
+        run: |
+          /bin/bash scripts/compile-test.sh tests/test_files.cpp
+          ./build/tests/test_files.cpp.binary tests/data/cars-on-a-highway.jpeg
+
+      - name: 'testing etc API'
+        shell: bash
+        run: |
+          /bin/bash scripts/compile-test.sh tests/test_etc.cpp
+          ./build/tests/test_etc.cpp.binary
+
+      - name: 'testing image API'
+        shell: bash
+        run: |
+          /bin/bash scripts/compile-test.sh tests/test_image.cpp
+          ./build/tests/test_image.cpp.binary tests/data/cars-on-a-highway.jpeg
+
+#      - name: 'testing video API'
+#        shell: bash
+#        run: |
+#          /bin/bash scripts/compile-test.sh tests/test_image.cpp
+#          ./build/tests/test_video.cpp.binary [video-path]
+
+      - name: 'setting up YOLOv5'
+        shell: bash
+        run: |
+          /bin/bash scripts/compile-yolo-onnx.sh
+
+      - name: 'testing DNN on image API'
+        shell: bash
+        run: |
+          /bin/bash scripts/compile-test.sh tests/test_dnn_on_images.cpp
+          ./build/tests/test_dnn_on_images.cpp.binary /tmp/YOLOv5/models/yolov5x.simplified.onnx tests/data/coco.names tests/data/cars-on-a-highway.jpeg
+
+#      - name: 'testing DNN on video API'
+#        shell: bash
+#        run: |
+#          /bin/bash scripts/compile-test.sh test_dnn_on_images.cpp
+#          ./build/test_dnn_on_images.cpp.binary /tmp/YOLOv5/models/yolov5x.onnx tests/data/coco.names tests/data/cars-on-a-highway.jpeg

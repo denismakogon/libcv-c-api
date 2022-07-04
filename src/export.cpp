@@ -47,8 +47,8 @@ void exportVectorOf(vector<Rect>& intermediate, PositionalFrameObjectDetectionDe
                         .confidence = 0,
                         .rect = (ExportableRectangle) {
                             .x0 = r.x, .y0 = r.y,
-                            .x1 = r.x + r.width-1,
-                            .y1 = r.y + r.height-1,
+                            .x1 = r.x + r.width,
+                            .y1 = r.y + r.height,
                             .width = r.width,
                             .height = r.height
                         }

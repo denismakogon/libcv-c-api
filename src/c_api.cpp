@@ -32,9 +32,9 @@ const char* ObjectDetectionDescriptor_toString(struct ObjectDetectionDescriptor 
     return stringToChar(toString(*ObjectDetectionDescriptor));
 }
 
-extern "C" const char * PositionalFrameObjectDetectionDescriptor_toString(struct PositionalFrameObjectDetectionDescriptor* PositionalFrameObjectDetectionDescriptor);
-const char * PositionalFrameObjectDetectionDescriptor_toString(struct PositionalFrameObjectDetectionDescriptor* PositionalFrameObjectDetectionDescriptor) {
-    return stringToChar(toString(*PositionalFrameObjectDetectionDescriptor));
+extern "C" const char * PositionalFrameObjectDetectionDescriptor_toString(struct PositionalFrameObjectDetectionDescriptor* positionalFrameObjectDetectionDescriptor);
+const char * PositionalFrameObjectDetectionDescriptor_toString(struct PositionalFrameObjectDetectionDescriptor* positionalFrameObjectDetectionDescriptor) {
+    return stringToChar(toString(*positionalFrameObjectDetectionDescriptor));
 }
 
 extern "C" int imageToMatrix(const char* imagePath,
@@ -47,11 +47,11 @@ int imageToMatrix(const char* imagePath,
 }
 
 extern "C" int runClassificationsOnImage(const char* classifierPath,
-                                         const char* imagePath, struct PositionalFrameObjectDetectionDescriptor *pds);
+                                         const char* imagePath, struct PositionalFrameObjectDetectionDescriptor *positionalFrameObjectDetectionDescriptor);
 int runClassificationsOnImage(const char* classifierPath,
                               const char* imagePath,
-                              struct PositionalFrameObjectDetectionDescriptor *PositionalFrameObjectDetectionDescriptor) {
-    return runClassificationsOnImage(string(classifierPath), string(imagePath), *PositionalFrameObjectDetectionDescriptor);
+                              struct PositionalFrameObjectDetectionDescriptor *positionalFrameObjectDetectionDescriptor) {
+    return runClassificationsOnImage(string(classifierPath), string(imagePath), *positionalFrameObjectDetectionDescriptor);
 }
 
 extern "C" int processVideoFile(const char* classifierPath,
@@ -63,45 +63,97 @@ int processVideoFile(const char* classifierPath,
     return runClassificationsOnVideo(string(classifierPath), string(videoFilePath), *ExportableRectanglesPerFrame);
 }
 
-extern "C" int runDetectionsOnVideo(const char* videoFilePath, const char* modelPath,
-                                    const char* modelWeights, const char* cocoaClassesFilePath,
+extern "C" int runDetectionsOnVideo(const char* videoFilePath,
+                                    const char* modelPath,
+                                    const char* modelWeights,
+                                    const char* cocoClassesFilePath,
                                     double confidenceThresholdMin,
                                     double confidenceThresholdMax);
 int runDetectionsOnVideo(const char* videoFilePath, const char* modelPath,
-                         const char* modelWeights, const char* cocoaClassesFilePath,
+                         const char* modelWeights, const char* cocoClassesFilePath,
+                         struct FrameDetections* frameDetections,
                          double confidenceThresholdMin,
                          double confidenceThresholdMax) {
     return runDetectionsOnVideo(string(videoFilePath), string(modelPath),
-                                string(modelWeights), string(cocoaClassesFilePath),
+                                string(modelWeights), string(cocoClassesFilePath),
+                                *frameDetections,
+                                confidenceThresholdMin=confidenceThresholdMin,
+                                confidenceThresholdMax=confidenceThresholdMax);
+}
+
+extern "C" int runDetectionsOnVideoONNX(const char* videoFilePath,
+                                    const char* modelWeights,
+                                    const char* cocoClassesFilePath,
+                                    double confidenceThresholdMin,
+                                    double confidenceThresholdMax);
+int runDetectionsOnVideoONNX(const char* videoFilePath,
+                             const char* modelWeights,
+                             const char* cocoClassesFilePath,
+                             struct FrameDetections* frameDetections,
+                             double confidenceThresholdMin,
+                             double confidenceThresholdMax) {
+    return runDetectionsOnVideoONNX(string(videoFilePath),
+                                string(modelWeights),
+                                string(cocoClassesFilePath),
+                                *frameDetections,
                                 confidenceThresholdMin=confidenceThresholdMin,
                                 confidenceThresholdMax=confidenceThresholdMax);
 }
 
 extern "C" int runDetectionsOnImage(const char* imagePath, const char* modelPath,
-                                    const char* modelWeights, const char* cocoaClassesFilePath,
-                                    struct PositionalFrameObjectDetectionDescriptor* PositionalFrameObjectDetectionDescriptor,
+                                    const char* modelWeights, const char* cocoClassesFilePath,
+                                    struct PositionalFrameObjectDetectionDescriptor* positionalFrameObjectDetectionDescriptor,
                                     double confidenceThresholdMin,
-                                    double confidenceThresholdMax);
+                                    double confidenceThresholdMax,
+                                    int inputSize);
 int runDetectionsOnImage(const char* imagePath, const char* modelPath,
-                         const char* modelWeights, const char* cocoaClassesFilePath,
-                         struct PositionalFrameObjectDetectionDescriptor* PositionalFrameObjectDetectionDescriptor,
+                         const char* modelWeights, const char* cocoClassesFilePath,
+                         struct PositionalFrameObjectDetectionDescriptor* positionalFrameObjectDetectionDescriptor,
                          double confidenceThresholdMin,
-                         double confidenceThresholdMax) {
+                         double confidenceThresholdMax,
+                         int inputSize) {
 
-    return runDetectionsOnImage(string(imagePath), string(modelPath), string(modelWeights),
-                                string(cocoaClassesFilePath),
-                                *PositionalFrameObjectDetectionDescriptor,
+    return runDetectionsOnImage(string(imagePath),
+                                string(modelPath), string(modelWeights),
+                                string(cocoClassesFilePath),
+                                *positionalFrameObjectDetectionDescriptor,
                                 confidenceThresholdMin=confidenceThresholdMin,
-                                confidenceThresholdMax=confidenceThresholdMax);
+                                confidenceThresholdMax=confidenceThresholdMax,
+                                inputSize=inputSize);
 }
+
+extern "C" int runDetectionsOnImageONNX(const char* imagePath,
+                                        const char* modelWeights,
+                                        const char* cocoClassesFilePath,
+                                        struct PositionalFrameObjectDetectionDescriptor* positionalFrameObjectDetectionDescriptor,
+                                        double confidenceThresholdMin,
+                                        double confidenceThresholdMax,
+                                        int inputSize);
+int runDetectionsOnImageONNX(const char* imagePath,
+                             const char* modelWeights,
+                             const char* cocoClassesFilePath,
+                             struct PositionalFrameObjectDetectionDescriptor* positionalFrameObjectDetectionDescriptor,
+                             double confidenceThresholdMin,
+                             double confidenceThresholdMax,
+                             int inputSize) {
+
+    return runDetectionsOnImageONNX(string(imagePath),
+                                    string(modelWeights),
+                                    string(cocoClassesFilePath),
+                                    *positionalFrameObjectDetectionDescriptor,
+                                    confidenceThresholdMin=confidenceThresholdMin,
+                                    confidenceThresholdMax=confidenceThresholdMax,
+                                    inputSize=inputSize);
+}
+
 
 extern "C" int drawDetectionsOnImage(const char* sourceImagePath,
                                      const char* finalImagePath,
-                                     struct PositionalFrameObjectDetectionDescriptor *PositionalFrameObjectDetectionDescriptor,
+                                     struct PositionalFrameObjectDetectionDescriptor *positionalFrameObjectDetectionDescriptor,
                                      double scale);
 int drawDetectionsOnImage(const char* sourceImagePath,
                           const char* finalImagePath,
-                          struct PositionalFrameObjectDetectionDescriptor *PositionalFrameObjectDetectionDescriptor,
+                          struct PositionalFrameObjectDetectionDescriptor *positionalFrameObjectDetectionDescriptor,
                           double scale) {
-    return drawDetectionsOnImage(string(sourceImagePath), string(finalImagePath), *PositionalFrameObjectDetectionDescriptor, scale);
+    return drawDetectionsOnImage(string(sourceImagePath), string(finalImagePath), *positionalFrameObjectDetectionDescriptor, scale);
 }

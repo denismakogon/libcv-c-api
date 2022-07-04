@@ -9,8 +9,6 @@ if [[ $OSTYPE == 'darwin'* ]]; then
   lib_extension="dylib"
   platform="macos"
 fi
-
-
 version=${1:-"$(date +'%Y.%m.%d')"}
 build_dir=${2:-"build"}
 version_no_dots=$(echo -e "${version}" | tr -d '.')
@@ -25,6 +23,7 @@ mkdir -p "${build_dir}/lib"
 # shellcheck disable=SC2046
 g++ -I src/ $(pkg-config --cflags --libs opencv4) \
     -std=c++11  -dynamiclib src/*.cpp \
+    -ferror-limit=1 -pthread \
     -o "${build_dir}/lib/${libname}" \
     -current_version "${version}" -compatibility_version "${version}"
 

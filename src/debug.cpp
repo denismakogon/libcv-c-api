@@ -13,10 +13,13 @@ using namespace std;
 /*---------------------------------DEBUG---------------------------------*/
 /*-----------------------------------------------------------------------*/
 
-void debug(string message) {
+bool debugEnabled() {
     string flag = getenv("DEBUG") ? getenv("DEBUG") : string("0");
-    bool debugEnabled = string("1").compare(flag) == 0;
-    if (debugEnabled) {
+    return string("1").compare(flag) == 0;
+}
+
+void debug(string message) {
+    if (debugEnabled()) {
         puts(message.c_str());
     }
 }

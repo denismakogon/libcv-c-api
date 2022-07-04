@@ -48,3 +48,14 @@ a library will be stored at:
 ```shell
 /usr/local/lib/libopencv_c_api.dylib
 ```
+
+### Building test suites
+
+```shell
+g++ -std=c++11 \
+  `pkg-config --cflags --libs opencv4` \
+  -I src/ -Lbuild/lib cv-c-api \
+  -Wall -Werror \
+  -ferror-limit=1 \
+  test_files.cpp
+```

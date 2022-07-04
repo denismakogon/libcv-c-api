@@ -9,6 +9,7 @@
 #define debug_hpp
 
 #include <stdio.h>
+#include <string>
 
 using namespace std;
 
