@@ -14,8 +14,8 @@ fi
 
 mkdir -p build/tests
 # shellcheck disable=SC2046
-g++ -std=c++11 \
+time g++ -pipe -std=c++11 \
   $(pkg-config --cflags --libs opencv4) \
   -I src/ -Lbuild/lib build/lib/"${libname}.${lib_extension}" \
-  -g -Wall -Werror -ferror-limit=1 \
+  -Wall -Werror -ferror-limit=1 \
   "${test_suite_cpp_file}" -o "build/${test_suite_cpp_file}.binary"

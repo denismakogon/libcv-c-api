@@ -21,7 +21,7 @@ mkdir -p "${build_dir}/lib"
 ./scripts/patch-version.sh "${version}"
 
 # shellcheck disable=SC2046
-g++ -I src/ $(pkg-config --cflags --libs opencv4) \
+time g++ -pipe -I src/ $(pkg-config --cflags --libs opencv4) \
     -std=c++11  -dynamiclib src/*.cpp \
     -ferror-limit=1 -pthread \
     -o "${build_dir}/lib/${libname}" \
