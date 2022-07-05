@@ -13,6 +13,7 @@
 #include "include/data_types.h"
 #include "include/dnn.hpp"
 #include "include/video.hpp"
+#include "include/print.hpp"
 
 
 using namespace std;
@@ -20,23 +21,25 @@ using namespace cv;
 using namespace cv::dnn;
 
 int main(int argc, char* argv[]) {
-    if (argc < 4) {
+    if (argc < 5) {
         puts("one of parameters is missing");
-        puts("program [onnx-model-path] [coco-class-names-path] [video-path]");
+        puts("program [onnx-model-path] [coco-class-names-path] [video-path]  [image-path]");
         exit(1);
     }
 
     auto onnxModel = string(argv[1]);
     auto cocoClasses = string(argv[2]);
     auto videoPath = string(argv[3]);
+    auto imagePath = string(argv[4]);
     
     FrameDetections fd;
     
-    int retCode = runDetectionsOnVideoONNX(videoPath, onnxModel, cocoClasses, fd);
+    int retCode = runDetectionsOnVideoONNX(imagePath, onnxModel, cocoClasses, fd);
     if (retCode != 0) {
-        puts("Test [runDetectionsOnVideoONNX] failed!");
+        puts("Test [runDetectionsOnVideoONNXThreaded] failed!");
         exit(1);
     }
+    print(fd);
     
     retCode = runDetectionsOnVideoONNX("/tmp/blah.jpeg", onnxModel, cocoClasses, fd);
     if (retCode != -1) {
@@ -55,14 +58,14 @@ int main(int argc, char* argv[]) {
         puts("Test [runDetectionsOnVideoONNX] should have failed with bad COCO class names path!");
         exit(1);
     }
-    
+
     vector<Mat> frames;
     retCode = readAllFrames(videoPath, frames);
     if (retCode != 0) {
         puts("Test [runDetectionsOnVideoONNX] failed!");
         exit(1);
     }
-    
+
     assert(frames.size() == fd.size);
     puts("test [runDetectionsOnVideoONNX] passed");
 }
