@@ -9,7 +9,6 @@
 #include <thread>
 #include <string>
 #include <vector>
-#include <queue>
 
 #include "opencv2/core/mat.hpp"
 #include "opencv2/dnn.hpp"
@@ -24,40 +23,30 @@ using namespace std;
 using namespace cv;
 using namespace cv::dnn;
 
-thread create_tasks(Net& net, Mat& frame, int index,
-                    vector<string>& cocoClasses,
-                    queue<PositionalFrameObjectDetectionDescriptor>& results,
-                    double confidenceThresholdMin=0.1,
-                    double confidenceThresholdMax=1.0,
-                    int inputSize=640) {
+thread create_frame_detection_tasks(Net& net, Mat& frame, int index,
+                                    vector<string>& cocoClasses,
+                                    vector<PositionalFrameObjectDetectionDescriptor>& results,
+                                    double confidenceThresholdMin=0.1,
+                                    double confidenceThresholdMax=1.0,
+                                    int inputSize=640) {
+    debug("in create_frame_detection_tasks");
     thread t([&net, &frame, &index, &cocoClasses,
                &confidenceThresholdMin,
                &confidenceThresholdMax, &results, &inputSize] () {
-        PositionalFrameObjectDetectionDescriptor pds;
+        debug("in threaded task");
         vector<ObjectDetectionDescriptor> ds;
-
         _runObjectDetectionsOn(frame, net, ds, cocoClasses,
                                confidenceThresholdMin,
                                confidenceThresholdMax,
                                inputSize);
-        sort(
-             ds.begin(), ds.end(),
-             [](ObjectDetectionDescriptor a, ObjectDetectionDescriptor b) {
-                 debug(toString(a));
-                 debug(toString(b));
-                 return a.rect.height * a.rect.width <= b.rect.height * b.rect.width;
-             }
-         );
-
-        pds = (PositionalFrameObjectDetectionDescriptor) {
-            .position = 0,
-            .size = ds.size(),
-            .detections = ds.data()
-        };
-
-        pds.position = index;
         
-        results.push(pds);
+        results.push_back({
+            .position = index,
+            .size = ds.size(),
+            .detections = ds.data(),
+        });
+        debug("done with threaded task");
     });
+    debug("done with create_frame_detection_tasks");
     return t;
 }

@@ -12,7 +12,6 @@
 #include <thread>
 #include <string>
 #include <vector>
-#include <deque>
 
 #include "opencv2/core/mat.hpp"
 #include "opencv2/dnn.hpp"
@@ -23,7 +22,7 @@ using namespace cv::dnn;
 
 thread create_frame_detection_tasks(Net& net, Mat& frame, int index,
                                     vector<string>& cocoClasses,
-                                    deque<PositionalFrameObjectDetectionDescriptor>& results,
+                                    vector<PositionalFrameObjectDetectionDescriptor>& results,
                                     double confidenceThresholdMin=0.1,
                                     double confidenceThresholdMax=1.0,
                                     int inputSize=640);
