@@ -40,3 +40,7 @@ string toString(ObjectDetectionDescriptor& object) {
 string toString(PositionalFrameObjectDetectionDescriptor& object) {
     return format("position: %d, number of detections: %lu", object.position, object.size);
 }
+
+string toString(FrameDetections& object) {
+    return format("number of frames: %lu", object.size);
+}

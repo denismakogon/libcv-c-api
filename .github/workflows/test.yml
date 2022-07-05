@@ -118,5 +118,5 @@ jobs:
 #      - name: 'testing DNN on video API'
 #        shell: bash
 #        run: |
-#          /bin/bash scripts/compile-test.sh test_dnn_on_images.cpp
-#          ./build/test_dnn_on_images.cpp.binary /tmp/YOLOv5/models/simplified.onnx tests/data/coco.names tests/data/cars-passing-by.mp4
+#          /bin/bash scripts/compile-test.sh tests/test_dnn_on_video.cpp
+#          ./build/tests/test_dnn_on_video.cpp.binary /tmp/YOLOv5/models/simplified.onnx tests/data/coco.names tests/data/cars-passing-by.mp4 tests/data/cars-on-a-highway.jpeg

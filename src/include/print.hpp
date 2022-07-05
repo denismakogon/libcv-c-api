@@ -14,5 +14,6 @@ void print(ExportableMat& object);
 void print(ExportableRectangle& object);
 void print(ObjectDetectionDescriptor& object);
 void print(PositionalFrameObjectDetectionDescriptor& object);
+void print(FrameDetections& object);
 
 #endif /* print_hpp */

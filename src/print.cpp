@@ -30,3 +30,7 @@ void print(ObjectDetectionDescriptor& object) {
 void print(PositionalFrameObjectDetectionDescriptor& object) {
     puts(toString(object).c_str());
 }
+
+void print(FrameDetections& object) {
+    puts(toString(object).c_str());
+}
