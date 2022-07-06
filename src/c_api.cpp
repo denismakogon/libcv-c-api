@@ -5,13 +5,14 @@
 //  Created by Denis Makogon on 17.06.2022.
 //
 
-#include "include/dnn.hpp"
 #include "include/drawing.hpp"
 #include "include/classifier.hpp"
 #include "include/etc.hpp"
 #include "include/image.hpp"
 #include "include/to_string.hpp"
 #include "include/files.hpp"
+#include "include/detection_on_image.hpp"
+#include "include/detection_on_video.hpp"
 
 #include "include/data_types.h"
 
@@ -114,7 +115,8 @@ int runDetectionsOnImage(const char* imagePath, const char* modelPath,
                          int inputSize) {
 
     return runDetectionsOnImage(string(imagePath),
-                                string(modelPath), string(modelWeights),
+                                string(modelPath),
+                                string(modelWeights),
                                 string(cocoClassesFilePath),
                                 *positionalFrameObjectDetectionDescriptor,
                                 confidenceThresholdMin=confidenceThresholdMin,

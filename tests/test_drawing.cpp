@@ -12,7 +12,7 @@
 
 #include "include/data_types.h"
 
-#include "include/dnn.hpp"
+#include "include/detection_on_image.hpp"
 #include "include/drawing.hpp"
 
 
@@ -45,9 +45,9 @@ int main (int argc, char* argv[]) {
     assert(pds.detections != 0);
 
     retCode = drawDetectionsOnImage(imagePath, finalImagePath, pds);
-    if (retCode != 0) {
+    if (retCode != 1) {
         puts("Test [drawDetectionsOnImage] failed!");
-        exit(retCode);
+        exit(1);
     }
     
     assert(true == file_exists(finalImagePath));

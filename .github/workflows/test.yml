@@ -79,41 +79,40 @@ jobs:
         run: |
           /bin/bash scripts/package-sources.sh ${{ steps.date.outputs.date }}
 
+      - name: 'make lib'
+        shell: bash
+        run: |
+          make lib -j$(nproc)
+
       - name: 'testing files API'
         shell: bash
         run: |
-          /bin/bash scripts/compile-test.sh tests/test_files.cpp
-          ./build/tests/test_files.cpp.binary tests/data/cars-on-a-highway.jpeg
+          make test-files -j$(nproc)
 
       - name: 'testing etc API'
         shell: bash
         run: |
-          /bin/bash scripts/compile-test.sh tests/test_etc.cpp
-          ./build/tests/test_etc.cpp.binary
+          make test-etc -j$(nproc)
 
       - name: 'testing image API'
         shell: bash
         run: |
-          /bin/bash scripts/compile-test.sh tests/test_image.cpp
-          ./build/tests/test_image.cpp.binary tests/data/cars-on-a-highway.jpeg
+          make test-image -j$(nproc)
 
       - name: 'testing video API'
         shell: bash
         run: |
-          /bin/bash scripts/compile-test.sh tests/test_image.cpp
-          ./build/tests/test_video.cpp.binary tests/data/cars-passing-by.mp4 tests/data/cars-on-a-highway.jpeg
+          make test-video -j$(nproc)
 
       - name: 'testing DNN on image API'
         shell: bash
         run: |
-          /bin/bash scripts/compile-test.sh tests/test_dnn_on_images.cpp
-          ./build/tests/test_dnn_on_images.cpp.binary /tmp/YOLOv5/models/simplified.onnx tests/data/coco.names tests/data/cars-on-a-highway.jpeg
+          make test-dnn-on-images -j$(nproc)
 
-      - name: 'testing DNN on image API'
+      - name: 'testing drawing API'
         shell: bash
         run: |
-          /bin/bash scripts/compile-test.sh tests/test_drawing.cpp
-          ./build/tests/test_drawing.cpp.binary /tmp/YOLOv5/models/simplified.onnx tests/data/coco.names tests/data/cars-on-a-highway.jpeg
+          make test-drawing -j$(nproc)
 
 #      - name: 'testing DNN on video API'
 #        shell: bash

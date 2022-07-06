@@ -11,7 +11,7 @@
 #include "opencv2/dnn.hpp"
 
 #include "include/data_types.h"
-#include "include/dnn.hpp"
+#include "include/detection_on_video.hpp"
 #include "include/video.hpp"
 #include "include/print.hpp"
 

@@ -18,6 +18,9 @@
 		AA3A47942865CBB50030B49E /* to_string.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA3A47892865CBB40030B49E /* to_string.cpp */; };
 		AA3A47952865CBB50030B49E /* etc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA3A478A2865CBB40030B49E /* etc.cpp */; };
 		AA3A47962865CBB50030B49E /* files.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA3A478B2865CBB50030B49E /* files.cpp */; };
+		AA9E4AB328757B4500207082 /* detection_on_image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA9E4AB128757B4500207082 /* detection_on_image.cpp */; };
+		AA9E4AB628757F0200207082 /* detection_on_video.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA9E4AB428757F0200207082 /* detection_on_video.cpp */; };
+		AA9E4ABB28758F9A00207082 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = AA9E4ABA28758F9A00207082 /* Makefile */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -61,6 +64,14 @@
 		AA3A478B2865CBB50030B49E /* files.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = files.cpp; sourceTree = "<group>"; };
 		AA422C9E286F2BCD00D58354 /* version.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
 		AA422CA1286F2F3A00D58354 /* version.h.t */ = {isa = PBXFileReference; lastKnownFileType = text; path = version.h.t; sourceTree = "<group>"; };
+		AA9E4AB128757B4500207082 /* detection_on_image.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = detection_on_image.cpp; sourceTree = "<group>"; };
+		AA9E4AB228757B4500207082 /* detection_on_image.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = detection_on_image.hpp; sourceTree = "<group>"; };
+		AA9E4AB428757F0200207082 /* detection_on_video.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = detection_on_video.cpp; sourceTree = "<group>"; };
+		AA9E4AB528757F0200207082 /* detection_on_video.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = detection_on_video.hpp; sourceTree = "<group>"; };
+		AA9E4AB728758CC400207082 /* tests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tests; sourceTree = "<group>"; };
+		AA9E4AB828758CC400207082 /* scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = scripts; sourceTree = "<group>"; };
+		AA9E4AB928758CC500207082 /* .github */ = {isa = PBXFileReference; lastKnownFileType = folder; path = .github; sourceTree = "<group>"; };
+		AA9E4ABA28758F9A00207082 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +99,8 @@
 				AA249B64286636B4001B3CA7 /* files.hpp */,
 				AA249B6A286636B5001B3CA7 /* image.hpp */,
 				AA249B63286636B4001B3CA7 /* to_string.hpp */,
+				AA9E4AB228757B4500207082 /* detection_on_image.hpp */,
+				AA9E4AB528757F0200207082 /* detection_on_video.hpp */,
 				AA249B65286636B4001B3CA7 /* video.hpp */,
 				AA422C9E286F2BCD00D58354 /* version.h */,
 				AA422CA1286F2F3A00D58354 /* version.h.t */,
@@ -98,6 +111,10 @@
 		AA3A476B2865CB0E0030B49E = {
 			isa = PBXGroup;
 			children = (
+				AA9E4ABA28758F9A00207082 /* Makefile */,
+				AA9E4AB928758CC500207082 /* .github */,
+				AA9E4AB828758CC400207082 /* scripts */,
+				AA9E4AB728758CC400207082 /* tests */,
 				AA3A477E2865CBB20030B49E /* LICENSE */,
 				AA3A47842865CBB30030B49E /* README.md */,
 				AA3A47762865CB0E0030B49E /* src */,
@@ -128,6 +145,8 @@
 				AA3A47832865CBB20030B49E /* image.cpp */,
 				AA3A47892865CBB40030B49E /* to_string.cpp */,
 				AA3A47882865CBB40030B49E /* video.cpp */,
+				AA9E4AB128757B4500207082 /* detection_on_image.cpp */,
+				AA9E4AB428757F0200207082 /* detection_on_video.cpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -192,13 +211,16 @@
 				AA3A47922865CBB50030B49E /* dnn.cpp in Sources */,
 				AA3A478C2865CBB50030B49E /* drawing.cpp in Sources */,
 				AA3A47912865CBB50030B49E /* export.cpp in Sources */,
+				AA9E4AB628757F0200207082 /* detection_on_video.cpp in Sources */,
 				AA3A478F2865CBB50030B49E /* classifier.cpp in Sources */,
 				AA3A47932865CBB50030B49E /* video.cpp in Sources */,
 				AA3A478D2865CBB50030B49E /* debug.cpp in Sources */,
 				AA3A478E2865CBB50030B49E /* c_api.cpp in Sources */,
 				AA3A47942865CBB50030B49E /* to_string.cpp in Sources */,
+				AA9E4AB328757B4500207082 /* detection_on_image.cpp in Sources */,
 				AA3A47952865CBB50030B49E /* etc.cpp in Sources */,
 				AA3A47962865CBB50030B49E /* files.cpp in Sources */,
+				AA9E4ABB28758F9A00207082 /* Makefile in Sources */,
 				AA3A47902865CBB50030B49E /* image.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -257,7 +279,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				"HEADER_SEARCH_PATHS[arch=*]" = /usr/local/opt/opencv/include/opencv4;
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					/usr/local/opt/opencv/include/opencv4,
+					"/Users/denismakogon/go/src/github.com/denismakogon/cpp-to-c-api/src",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 11.6;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -371,7 +396,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				"HEADER_SEARCH_PATHS[arch=*]" = /usr/local/opt/opencv/include/opencv4;
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					/usr/local/opt/opencv/include/opencv4,
+					"/Users/denismakogon/go/src/github.com/denismakogon/cpp-to-c-api",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 11.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;

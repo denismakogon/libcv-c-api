@@ -21,43 +21,20 @@ using namespace std;
 using namespace cv;
 using namespace cv::dnn;
 
+int setupDNN(string modelWeights, Net& net,
+             int backend=DNN_BACKEND_DEFAULT,
+             int target=DNN_TARGET_CPU);
+
+int setupDNN(string modelPath, string modelWeights, Net& net,
+             int backend=DNN_BACKEND_DEFAULT,
+             int target=DNN_TARGET_CPU);
+
 void runObjectDetectionsOn(Mat& img, Net& net, vector<ObjectDetectionDescriptor>& ds,
-                            vector<string>& cocoClasses,
-                            double confidenceThresholdMin=0.1,
-                            double confidenceThresholdMax=1.0);
+                           vector<string>& cocoClasses,
+                           double confidenceThresholdMin=0.1,
+                           double confidenceThresholdMax=1.0,
+                           int inputSize=640);
 
-int runDetectionsOnVideo(string videoFilePath, string modelPath,
-                         string modelWeights, string cocoClassesFilePath,
-                         FrameDetections& fd,
-                         double confidenceThresholdMin=0.1,
-                         double confidenceThresholdMax=1.0);
-
-int runDetectionsOnVideoONNX(string videoFilePath, string modelWeights,
-                         string cocoClassesFilePath,
-                         FrameDetections& fd,
-                         double confidenceThresholdMin=0.1,
-                         double confidenceThresholdMax=1.0);
-
-int runDetectionsOnImage(string imagePath, string modelPath, string modelWeights,
-                         string cocoClassesFilePath,
-                         PositionalFrameObjectDetectionDescriptor& pds,
-                         double confidenceThresholdMin=0.1,
-                         double confidenceThresholdMax=1.0,
-                         int inputSize=640);
-
-int runDetectionsOnImageONNX(string imagePath, string modelWeights,
-                             string cocoClassesFilePath,
-                             PositionalFrameObjectDetectionDescriptor& pds,
-                             double confidenceThresholdMin=0.1,
-                             double confidenceThresholdMax=1.0,
-                             int inputSize=640);
-
-int runDetectionsOnImageONNX(string imagePath, string modelWeights,
-                             string cocoClassesFilePath,
-                             vector<ObjectDetectionDescriptor>& ds,
-                             double confidenceThresholdMin=0.1,
-                             double confidenceThresholdMax=1.0,
-                             int inputSize=640);
 // service functions
 
 void _runObjectDetectionsOn(Mat& img, Net& net, vector<ObjectDetectionDescriptor>& ds,
