@@ -14,6 +14,8 @@
 #include "opencv2/core/mat.hpp"
 #include "opencv2/dnn.hpp"
 
+#include "include/data_types.h"
+
 using namespace std;
 using namespace cv;
 using namespace cv::dnn;
