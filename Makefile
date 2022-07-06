@@ -44,8 +44,8 @@ test-suite:
 	./build/$(suite).binary $(args)
 
 test: clean lib
-	$(MAKE) test-suite suite=tests/test_files.cpp args="tests/data/cars-on-a-highway.jpeg tests/data/cars-passing-by.mp4"
 	$(MAKE) test-suite suite=tests/test_etc.cpp
+	$(MAKE) test-suite suite=tests/test_files.cpp args="tests/data/cars-on-a-highway.jpeg"
 	$(MAKE) test-suite suite=tests/test_image.cpp args="tests/data/cars-on-a-highway.jpeg"
 	$(MAKE) test-suite suite=tests/test_video.cpp args="tests/data/cars-passing-by.mp4 tests/data/cars-on-a-highway.jpeg"
 	$(MAKE) test-suite suite=tests/test_dnn_on_images.cpp args="/tmp/YOLOv5/models/simplified.onnx tests/data/coco.names tests/data/cars-on-a-highway.jpeg"

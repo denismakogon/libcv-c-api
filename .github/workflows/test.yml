@@ -30,18 +30,6 @@ jobs:
         with:
           test-bot: false
 
-      - name: 'configure Homebrew cache'
-        id: cache
-        uses: actions/cache@v3.0.3
-        with:
-          path: |
-            /usr/local/Homebrew
-            /usr/local/Cellar
-            /usr/local/Frameworks
-            /tmp/YOLOv5
-          key: ${{ runner.os }}-rubygems-${{ steps.set-up-homebrew.outputs.gems-hash }}
-          restore-keys: ${{ runner.os }}-rubygems-
-
       - name: 'install prerequisites'
         shell: bash
         run: |
@@ -49,11 +37,6 @@ jobs:
           brew install opencv
           brew install dlib
           brew install pkg-config
-        if: ${{ steps.cache.outputs.cache-hit != 'true' }}
-
-      - name: 'link libraries'
-        shell: bash
-        run: |
           brew link opencv
           brew link dlib
           pkg-config --modversion opencv4
@@ -63,7 +46,6 @@ jobs:
         shell: bash
         run: |
           /bin/bash scripts/compile-yolo-onnx.sh yolov5s
-        if: ${{ steps.cache.outputs.cache-hit != 'true' }}
 
       - name: 'package library'
         shell: bash
