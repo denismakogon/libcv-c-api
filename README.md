@@ -37,14 +37,24 @@ $ pkg-config --cflags --libs opencv4
 
 ```
 
+Compile a library
 ```shell
-g++ -I. `pkg-config --cflags --libs opencv4` \
-    -std=c++11  -dynamiclib *.cpp \
-    -o /usr/local/lib/libopencv_c_api.dylib \
-    -current_version 1.0 -compatibility_version 1.0
+make lib -j$(nproc)
 ```
 
-a library will be stored at:
+a library and headers will be stored at:
 ```shell
-/usr/local/lib/libopencv_c_api.dylib
+build/lib/libopencv_c_api.dylib
+```
+
+### Running test
+
+All tests:
+```shell
+make test
+```
+
+Specific test:
+```shell
+make test-suite tests/<test-suite>.cpp args="<test-arguments>"
 ```

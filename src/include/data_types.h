@@ -9,9 +9,12 @@
 #define data_types_h
 
 struct ExportableMat {
-    char* matContent;
+    char* data;
     int width;
     int height;
+    int channels;
+    int flags;
+    int dimentions;
 };
 
 struct ExportableRectangle {
@@ -40,6 +43,11 @@ struct PositionalFrameObjectDetectionDescriptor {
     int position;
     unsigned long size;
     struct ObjectDetectionDescriptor* detections;
+};
+
+struct FrameDetections {
+    unsigned long size;
+    struct PositionalFrameObjectDetectionDescriptor* frameDetections;
 };
 
 #endif /* data_types_h */

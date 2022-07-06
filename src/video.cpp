@@ -47,7 +47,6 @@ int readAllFrames(string videoFilePath, vector<Mat>& frames) {
         }
         frames.push_back(currentFrame);
     }
-    debug(format("done with readAllFrames, retCode: %d", 0));
+    debug(format("done with readAllFrames, frame count: %lu, retCode: %d", frames.size(), 0));
     return 0;
 }
-

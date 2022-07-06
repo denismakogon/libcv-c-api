@@ -29,14 +29,18 @@ void matToByteArray(Mat& image, ExportableMat& exMat) {
     char * bytes = new char[size];
     memcpy(bytes,image.data,size * sizeof(char));
     exMat = (ExportableMat) {
-        .matContent = bytes,
+        .data = bytes,
         .width = image.cols,
-        .height = image.rows
+        .height = image.rows,
+        .channels = image.channels(),
+        .dimentions = image.dims,
+        .flags = image.flags,
     };
 }
 
 void byteArrayToMat(ExportableMat& exMat, Mat& mat) {
-    mat = Mat(exMat.height, exMat.width, CV_8UC3, exMat.matContent).clone();
+    int* sizes = new int[2] {exMat.height, exMat.width};
+    mat = Mat(exMat.dimentions, sizes, CV_8UC(exMat.channels), exMat.data).clone();
 }
 
 int imageToMatrix(string imagePath, int option, ExportableMat& exMat) {

@@ -18,8 +18,10 @@
 using namespace std;
 using namespace cv;
 
+string toString(ExportableMat& object);
 string toString(ExportableRectangle& object);
 string toString(ObjectDetectionDescriptor& object);
 string toString(PositionalFrameObjectDetectionDescriptor& object);
+string toString(FrameDetections& object);
 
 #endif /* to_string_hpp */

@@ -10,6 +10,7 @@
 #include "opencv2/core/utility.hpp"
 
 #include "include/data_types.h"
+#include "include/debug.hpp"
 
 using namespace std;
 using namespace cv;
@@ -17,6 +18,12 @@ using namespace cv;
 /*-----------------------------------------------------------------------*/
 /*------------------------------toString API-----------------------------*/
 /*-----------------------------------------------------------------------*/
+
+string toString(ExportableMat& exMat) {
+    return format("width: %d, height: %d, channels: %d, flags: %d, dims: %d",
+                  exMat.width, exMat.height, exMat.channels,
+                  exMat.flags, exMat.dimentions);
+}
 
 string toString(ExportableRectangle& object) {
     return format("X=(%d, %d) Y=(%d,%d) width=%d heights=%d",
@@ -27,13 +34,13 @@ string toString(ExportableRectangle& object) {
 
 string toString(ObjectDetectionDescriptor& object) {
     return format("confidence: %6.4lf, rectange: [%s] class: %s\n",
-                  object.confidence, toString(object.rect).data(), object.className);
+                  object.confidence, toString(object.rect).c_str(), object.className);
 }
 
 string toString(PositionalFrameObjectDetectionDescriptor& object) {
-    string res = "";
-    for (int i = 0; i < object.size; i++) {
-        res += toString(object.detections[i]);
-    }
-    return format("position: %d, detections: %s", object.position, res.c_str());
+    return format("position: %d, number of detections: %lu", object.position, object.size);
+}
+
+string toString(FrameDetections& object) {
+    return format("number of frames: %lu", object.size);
 }

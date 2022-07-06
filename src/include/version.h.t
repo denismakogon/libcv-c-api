@@ -11,7 +11,7 @@
 #ifndef version_h
 #define version_h
 
-char* VERSION = "latest";
+char* VERSION = new char[] {"latest"};
 
 int MAJOR = major;
 int MINOR = minor;
