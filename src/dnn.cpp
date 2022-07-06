@@ -118,8 +118,8 @@ void inputPreprocess(const Mat& frame, Net& net, Size inputSize, float scale,
 
 void formatDetections(Mat& frame, vector<Mat>& outs, Net& net, vector<ObjectDetectionDescriptor>& ds,
                       vector<string>& cocoClasses,
-                      double confidenceThresholdMax=1.0,
                       double confidenceThresholdMin=0.1,
+                      double confidenceThresholdMax=1.0,
                       int inputSize=640) {
     debug("in formatDetections");
     vector<int> outLayers = net.getUnconnectedOutLayers();
@@ -267,9 +267,9 @@ void runObjectDetectionsOn(Mat& img, Net& net, vector<ObjectDetectionDescriptor>
     net.forward(outputs, net.getUnconnectedOutLayersNames());
     
     formatDetections(img, outputs, net, ds, cocoClasses,
-                     confidenceThresholdMax=confidenceThresholdMax,
-                     confidenceThresholdMin=confidenceThresholdMin,
-                     inputSize=inputSize);
+                     confidenceThresholdMin,
+                     confidenceThresholdMax,
+                     inputSize);
     debug(format("in runObjectDetectionsOn, detections number = %lu", ds.size()));
     
     debug("done with runObjectDetectionsOn");
@@ -281,7 +281,7 @@ void _runObjectDetectionsOn(Mat& img, Net& net, vector<ObjectDetectionDescriptor
                            double confidenceThresholdMax,
                            int inputSize) {
     runObjectDetectionsOn(img, net, ds, cocoClasses,
-                          confidenceThresholdMin=confidenceThresholdMin,
-                          confidenceThresholdMax=confidenceThresholdMax,
-                          inputSize=inputSize);
+                          confidenceThresholdMin,
+                          confidenceThresholdMax,
+                          inputSize);
 }

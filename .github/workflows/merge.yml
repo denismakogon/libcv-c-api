@@ -58,23 +58,29 @@ jobs:
           pkg-config --modversion opencv4
           pkg-config --modversion dlib-1
 
+      - name: 'compiling simplified up ONNX model'
+        shell: bash
+        run: |
+          /bin/bash scripts/compile-yolo-onnx.sh yolov5s
+        if: ${{ steps.cache.outputs.cache-hit != 'true' }}
+
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y.%m.%d')"
 
-      - name: 'package compiled library'
+      - name: 'run tests'
         shell: bash
         env:
           IN_CI: true
         run: |
-          /bin/bash scripts/package-lib.sh ${{ steps.date.outputs.date }}
+          make test
 
-      - name: 'package library sources'
+      - name: 'package'
         shell: bash
         env:
           IN_CI: true
         run: |
-          /bin/bash scripts/package-sources.sh  ${{ steps.date.outputs.date }}
+          make archive
 
       - name: 'make a release'
         uses: marvinpinto/action-automatic-releases@latest

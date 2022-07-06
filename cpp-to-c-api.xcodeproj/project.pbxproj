@@ -72,6 +72,7 @@
 		AA9E4AB828758CC400207082 /* scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = scripts; sourceTree = "<group>"; };
 		AA9E4AB928758CC500207082 /* .github */ = {isa = PBXFileReference; lastKnownFileType = folder; path = .github; sourceTree = "<group>"; };
 		AA9E4ABA28758F9A00207082 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		AA9E4ABC2875DF6400207082 /* build */ = {isa = PBXFileReference; lastKnownFileType = folder; path = build; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +112,7 @@
 		AA3A476B2865CB0E0030B49E = {
 			isa = PBXGroup;
 			children = (
+				AA9E4ABC2875DF6400207082 /* build */,
 				AA9E4ABA28758F9A00207082 /* Makefile */,
 				AA9E4AB928758CC500207082 /* .github */,
 				AA9E4AB828758CC400207082 /* scripts */,

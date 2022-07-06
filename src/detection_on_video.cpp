@@ -29,7 +29,8 @@ int _runDetectionsOnVideo(Net& net, string videoFilePath,
                           string cocoClassesFilePath,
                           FrameDetections& fd,
                          double confidenceThresholdMin=1.0,
-                         double confidenceThresholdMax=0.1) {
+                         double confidenceThresholdMax=0.1,
+                         int inputSize=640) {
     vector<Mat> frames;
     vector<string> cocoClasses;
     vector<PositionalFrameObjectDetectionDescriptor> detectionsPerFrame;
@@ -48,8 +49,9 @@ int _runDetectionsOnVideo(Net& net, string videoFilePath,
     for (long i = 0; i < frames.size(); i++ ) {
         vector<ObjectDetectionDescriptor> ds;
         runObjectDetectionsOn(frames[i], net, ds, cocoClasses,
-                               confidenceThresholdMin=confidenceThresholdMin,
-                               confidenceThresholdMax=confidenceThresholdMax);
+                               confidenceThresholdMin,
+                               confidenceThresholdMax,
+                               inputSize);
         detectionsPerFrame.push_back({
             .position = static_cast<int>(i),
             .size = ds.size(),
@@ -85,8 +87,9 @@ int runDetectionsOnVideoONNX(string videoFilePath, string modelWeights,
     }
 
     retCode = _runDetectionsOnVideo(net, videoFilePath, cocoClassesFilePath, fd,
-                                    confidenceThresholdMin=confidenceThresholdMin,
-                                    confidenceThresholdMax=confidenceThresholdMax);
+                                    confidenceThresholdMin,
+                                    confidenceThresholdMax,
+                                    inputSize);
     debug(format("done with runDetectionsOnVideo, retCode: %d", retCode));
     return retCode;
 }
@@ -110,8 +113,9 @@ int runDetectionsOnVideo(string videoFilePath, string modelPath,
     }
 
     retCode = _runDetectionsOnVideo(net, videoFilePath, cocoClassesFilePath, fd,
-                                    confidenceThresholdMin=confidenceThresholdMin,
-                                    confidenceThresholdMax=confidenceThresholdMax);
+                                    confidenceThresholdMin,
+                                    confidenceThresholdMax,
+                                    inputSize);
     
     debug(format("done with runDetectionsOnVideo, retCode: %d", retCode));
     return retCode;

@@ -46,9 +46,9 @@ int _runDetectionsOnImage(Net& net, string imagePath, string cocoClassesFilePath
     }
     
     runObjectDetectionsOn(frame, net, ds, cocoClasses,
-                          confidenceThresholdMin=confidenceThresholdMin,
-                          confidenceThresholdMax=confidenceThresholdMax,
-                          inputSize=inputSize);
+                          confidenceThresholdMin,
+                          confidenceThresholdMax,
+                          inputSize);
 
     debug(format("in _runDetectionsOnImage, detections number = %lu", ds.size()));
 
@@ -73,9 +73,9 @@ int runDetectionsOnImageONNX(string imagePath, string modelWeights,
     }
     
     retCode = _runDetectionsOnImage(net, imagePath, cocoClassesFilePath, ds,
-                                    confidenceThresholdMin=confidenceThresholdMin,
-                                    confidenceThresholdMax=confidenceThresholdMax,
-                                    inputSize=inputSize);
+                                    confidenceThresholdMin,
+                                    confidenceThresholdMax,
+                                    inputSize);
       
     debug(format("done with runDetectionsOnImageONNX, retCode: %d", retCode));
     return retCode;
@@ -93,9 +93,9 @@ int runDetectionsOnImageONNX(string imagePath, string modelWeights,
     vector<ObjectDetectionDescriptor> ds;
     
     int retCode = runDetectionsOnImageONNX(imagePath, modelWeights, cocoClassesFilePath, ds,
-                                           confidenceThresholdMin=confidenceThresholdMin,
-                                           confidenceThresholdMax=confidenceThresholdMax,
-                                           inputSize=inputSize);
+                                           confidenceThresholdMin,
+                                           confidenceThresholdMax,
+                                           inputSize);
     
     ObjectDetectionDescriptor arr[ds.size()];
     copy(ds.begin(), ds.end(), arr);
@@ -128,9 +128,9 @@ int runDetectionsOnImage(string imagePath, string modelPath, string modelWeights
     }
     
     retCode = _runDetectionsOnImage(net, imagePath, cocoClassesFilePath, ds,
-                                    confidenceThresholdMin=confidenceThresholdMin,
-                                    confidenceThresholdMax=confidenceThresholdMax,
-                                    inputSize=inputSize);
+                                    confidenceThresholdMin,
+                                    confidenceThresholdMax,
+                                    inputSize);
 
     pds = {};
     pds.size = ds.size();

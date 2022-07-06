@@ -65,19 +65,10 @@ jobs:
           /bin/bash scripts/compile-yolo-onnx.sh yolov5s
         if: ${{ steps.cache.outputs.cache-hit != 'true' }}
 
-      - name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y.%m.%d')"
-
-      - name: 'package compiled library'
+      - name: 'package library'
         shell: bash
         run: |
-          /bin/bash scripts/package-lib.sh ${{ steps.date.outputs.date }}
-
-      - name: 'package library sources'
-        shell: bash
-        run: |
-          /bin/bash scripts/package-sources.sh ${{ steps.date.outputs.date }}
+          make archive
 
       - name: 'make lib'
         shell: bash
@@ -87,32 +78,32 @@ jobs:
       - name: 'testing files API'
         shell: bash
         run: |
-          make test-files -j$(nproc)
+          make test-suite suite=tests/test_files.cpp args="tests/data/cars-on-a-highway.jpeg tests/data/cars-passing-by.mp4"
 
       - name: 'testing etc API'
         shell: bash
         run: |
-          make test-etc -j$(nproc)
+          make test-suite suite=tests/test_etc.cpp
 
       - name: 'testing image API'
         shell: bash
         run: |
-          make test-image -j$(nproc)
+          make test-suite suite=tests/test_image.cpp args=tests/data/cars-on-a-highway.jpeg
 
       - name: 'testing video API'
         shell: bash
         run: |
-          make test-video -j$(nproc)
+          make test-suite suite=tests/test_video.cpp args="tests/data/cars-passing-by.mp4 tests/data/cars-on-a-highway.jpeg"
 
       - name: 'testing DNN on image API'
         shell: bash
         run: |
-          make test-dnn-on-images -j$(nproc)
+          make test-suite suite=tests/test_dnn_on_images.cpp args="/tmp/YOLOv5/models/simplified.onnx tests/data/coco.names tests/data/cars-on-a-highway.jpeg"
 
       - name: 'testing drawing API'
         shell: bash
         run: |
-          make test-drawing -j$(nproc)
+          make test-suite suite=tests/test_drawing.cpp args="/tmp/YOLOv5/models/simplified.onnx tests/data/coco.names tests/data/cars-on-a-highway.jpeg"
 
 #      - name: 'testing DNN on video API'
 #        shell: bash

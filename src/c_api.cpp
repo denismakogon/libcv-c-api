@@ -78,8 +78,8 @@ int runDetectionsOnVideo(const char* videoFilePath, const char* modelPath,
     return runDetectionsOnVideo(string(videoFilePath), string(modelPath),
                                 string(modelWeights), string(cocoClassesFilePath),
                                 *frameDetections,
-                                confidenceThresholdMin=confidenceThresholdMin,
-                                confidenceThresholdMax=confidenceThresholdMax);
+                                confidenceThresholdMin,
+                                confidenceThresholdMax);
 }
 
 extern "C" int runDetectionsOnVideoONNX(const char* videoFilePath,
@@ -97,8 +97,8 @@ int runDetectionsOnVideoONNX(const char* videoFilePath,
                                 string(modelWeights),
                                 string(cocoClassesFilePath),
                                 *frameDetections,
-                                confidenceThresholdMin=confidenceThresholdMin,
-                                confidenceThresholdMax=confidenceThresholdMax);
+                                confidenceThresholdMin,
+                                confidenceThresholdMax);
 }
 
 extern "C" int runDetectionsOnImage(const char* imagePath, const char* modelPath,
@@ -119,9 +119,9 @@ int runDetectionsOnImage(const char* imagePath, const char* modelPath,
                                 string(modelWeights),
                                 string(cocoClassesFilePath),
                                 *positionalFrameObjectDetectionDescriptor,
-                                confidenceThresholdMin=confidenceThresholdMin,
-                                confidenceThresholdMax=confidenceThresholdMax,
-                                inputSize=inputSize);
+                                confidenceThresholdMin,
+                                confidenceThresholdMax,
+                                inputSize);
 }
 
 extern "C" int runDetectionsOnImageONNX(const char* imagePath,
@@ -143,9 +143,9 @@ int runDetectionsOnImageONNX(const char* imagePath,
                                     string(modelWeights),
                                     string(cocoClassesFilePath),
                                     *positionalFrameObjectDetectionDescriptor,
-                                    confidenceThresholdMin=confidenceThresholdMin,
-                                    confidenceThresholdMax=confidenceThresholdMax,
-                                    inputSize=inputSize);
+                                    confidenceThresholdMin,
+                                    confidenceThresholdMax,
+                                    inputSize);
 }
 
 
