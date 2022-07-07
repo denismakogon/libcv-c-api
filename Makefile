@@ -14,7 +14,8 @@ ifeq ($(UNAME_S),Darwin)
 	PLATFORM = macos
 	LIB_EXTENSION = dylib
 endif
-LIBNAME = libcv-c-api.$(VERSION_NO_DOTS).$(PLATFORM).$(ARCH).$(LIB_EXTENSION)
+LIB_DEF = libcv-c-api.$(VERSION_NO_DOTS)
+LIBNAME = $(LIB_DEF).$(PLATFORM).$(ARCH).$(LIB_EXTENSION)
 LIB_FILE = $(BUILD_DIR)/lib/$(LIBNAME)
 LIB_BINARY_ARCHIVE_NAME = $(LIBNAME).tar.gz
 LIB_SOURCES_ARCHIVE_NAME = libcv-c-api.src.tar.gz
@@ -51,6 +52,12 @@ test: clean lib
 	$(MAKE) test-suite suite=tests/test_dnn_on_images.cpp args="/tmp/YOLOv5/models/simplified.onnx tests/data/coco.names tests/data/cars-on-a-highway.jpeg"
 	$(MAKE) test-suite suite=tests/test_drawing.cpp args="/tmp/YOLOv5/models/simplified.onnx tests/data/coco.names tests/data/cars-on-a-highway.jpeg"
 
-archive: clean lib
+java-src: lib
+	jextract --source -t $(package) -I src --header-class-name clang --output $(BUILD_DIR)/java/src/main/java $(args) src/include/c_api.h
+
+jar: java-src
+	pushd $(BUILD_DIR)/java/src/main/java && jar cvf $(CURDIR)/$(BUILD_DIR)/$(LIB_DEF).jar com; popd
+
+archive: lib jar
 	$(shell tar -zcvf $(BUILD_DIR)/$(LIB_SOURCES_ARCHIVE_NAME) src/ Makefile)
 	$(shell tar -zcvf $(BUILD_DIR)/$(LIB_BINARY_ARCHIVE_NAME) $(BUILD_DIR)/include $(BUILD_DIR)/lib)
