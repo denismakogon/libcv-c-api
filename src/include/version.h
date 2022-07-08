@@ -8,6 +8,6 @@
 #ifndef version_h
 #define version_h
 
-char* VERSION = new char[] {"latest"};
+char VERSION[8] = "latest";
 
 #endif /* version_h */

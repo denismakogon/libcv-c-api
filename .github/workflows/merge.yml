@@ -54,7 +54,7 @@ jobs:
       - name: 'run tests'
         shell: bash
         env:
-          IN_CI: true
+          IN_CI: "yes"
         run: |
           make test
 
@@ -63,7 +63,7 @@ jobs:
         env:
           IN_CI: true
         run: |
-          make archive
+            make archive package=com.libcv
 
       - name: 'make a release'
         uses: marvinpinto/action-automatic-releases@latest

@@ -8,6 +8,11 @@ on:
       - 'scripts/*'
 
 
+env:
+  CLANG_LLVM_BASE_URL: "https://github.com/llvm/llvm-project/releases/download/llvmorg-13.0.0/clang+llvm-13.0.0-x86_64"
+  ARCHIVE_EXT: "tar.xz"
+
+
 jobs:
   build-and-test:
     runs-on: ${{ matrix.os }}
@@ -17,12 +22,64 @@ jobs:
         include:
           - os: macos-latest
             TARGET: macos
+            CLANG_TARGET: apple-darwin
+            JAVA19_HOME: /tmp/deps/jdk-19/jdk-19.jdk/Contents/Home
+
 
     steps:
+
+      - name: 'Download JDK 19'
+        id: download_jdk_19
+        uses: oracle-actions/setup-java@v1.1.1
+        with:
+          website: jdk.java.net
+          release: 19
+          install: false
+        
+      - name: 'Extract JDK 19'
+        shell: sh
+        run: |
+          mkdir -p /tmp/deps/jdk-19
+          tar --strip-components=1 -xvf ${{ steps.download_jdk_19.outputs.archive }} -C /tmp/deps/jdk-19
+          ls -lah /tmp/deps/jdk-19
+
+      - name: 'Check Java 19 version'
+        shell: sh
+        run: |
+          ${{ matrix.JAVA19_HOME }}/bin/java --version
+
+      - name: 'Setup Java 18'
+        uses: oracle-actions/setup-java@v1.1.1
+        with:
+          release: 18
+
+      - name: 'Check default Java version'
+        shell: sh
+        run: |
+          java --version
+          echo JAVA_HOME=$JAVA_HOME
+
       - name: 'Check out repository'
         uses: actions/checkout@v3
         with:
           fetch-depth: 1
+
+      - name: 'Check Java 19 version'
+        shell: sh
+        run: |
+          java --version
+
+      - name: 'build jextract'
+        shell: sh
+        run: |
+          mkdir -p /tmp/deps
+          mkdir -p /tmp/deps/jextract
+          mkdir -p /tmp/deps/clang_llvm
+          wget -O /tmp/deps/LLVM.tar.gz ${{ env.CLANG_LLVM_BASE_URL }}-${{ matrix.CLANG_TARGET }}.${{ env.ARCHIVE_EXT }}
+          tar --strip-components=1 -xvf /tmp/deps/LLVM.tar.gz -C /tmp/deps/clang_llvm
+          git clone https://github.com/openjdk/jextract.git /tmp/deps/jextract
+          cd /tmp/deps/jextract
+          sh ./gradlew -Pjdk19_home=${{ matrix.JAVA19_HOME }} -Pllvm_home=/tmp/deps/clang_llvm clean verify
 
       - name: Set up Homebrew
         id: set-up-homebrew
@@ -50,7 +107,8 @@ jobs:
       - name: 'package library'
         shell: bash
         run: |
-          make archive
+          export PATH=${PATH}:/tmp/deps/jextract/build/jextract/bin
+          make archive package=com.libcv
 
       - name: 'make lib'
         shell: bash
