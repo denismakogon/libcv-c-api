@@ -82,6 +82,7 @@ jobs:
         with:
           path: /tmp/deps/*
           if-no-files-found: error
+          retention-days: 1
 
   build-lib:
     runs-on: ${{ matrix.os }}
@@ -129,6 +130,7 @@ jobs:
           path: |
              build/*.tar.gz
           if-no-files-found: error
+          retention-days: 1
 
   release:
     runs-on: ubuntu-latest

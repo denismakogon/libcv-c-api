@@ -83,6 +83,7 @@ jobs:
         with:
           path: /tmp/deps/*
           if-no-files-found: error
+          retention-days: 1
 
   build-and-test:
     needs: build-jextract
@@ -173,4 +174,3 @@ jobs:
           chmod +x /tmp/deps/artifact/jextract-${{ matrix.CLANG_TARGET }}/build/jextract/bin/serialver
           export PATH=${PATH}:/tmp/deps/artifact/jextract-${{ matrix.CLANG_TARGET }}/build/jextract/bin
           make archive
-

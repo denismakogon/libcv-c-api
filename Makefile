@@ -22,7 +22,7 @@ LIB_BINARY_ARCHIVE_NAME = $(LIBNAME).tar.gz
 LIB_SOURCES_ARCHIVE_NAME = libcv-c-api.src.tar.gz
 JAVA_SOURCES_DIR = $(BUILD_DIR)/src/main/java
 
-MAVEN_FLAGS = -Dversion=$(VERSION) -Dos=$(PLATFORM) -Darch=$(ARCH) -Dversion_no_dots=$(VERSION_NO_DOTS) -Dlib=$(LIB)
+MAVEN_FLAGS = -Dversion=$(VERSION) -Dlib=libcv
 
 all: clean lib test
 
@@ -70,12 +70,16 @@ archive-lib: lib
 
 archive: jar archive-sources archive-lib
 
-deploy-jar: jar
-	mvn deploy:deploy-file \
-		  -DgroupId=clang \
-		  -DartifactId=libcv \
-		  -Dpackaging=jar \
-		  -Dfile=target/$(LIB).$(VERSION).jar \
-		  -DrepositoryId=github \
-		  -Durl=https://maven.pkg.github.com/denismakogon/libcv-c-api \
-		  $(MAVEN_FLAGS)
+deploy-jar:
+	mvn deploy \
+	  -DgroupId=clang \
+	  -DartifactId=libcv \
+	  -Dpackaging=jar \
+	  -DrepositoryId=github \
+	  -Durl=https://maven.pkg.github.com/denismakogon/libcv-c-api \
+	  $(MAVEN_FLAGS)
+
+clean:
+	rm -fr $(BUILD_DIR)
+	mvn clean $(MAVEN_FLAGS)
+
