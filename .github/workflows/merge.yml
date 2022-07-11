@@ -153,12 +153,12 @@ jobs:
         run: echo "::set-output name=date::$(date +'%Y.%m.%d')"
       - name: Publish jar
         run: |
-          chmod +x /tmp/deps/artifact/jextract-${{ matrix.CLANG_TARGET }}/build/jextract/bin/java
-          chmod +x /tmp/deps/artifact/jextract-${{ matrix.CLANG_TARGET }}/build/jextract/bin/javac
-          chmod +x /tmp/deps/artifact/jextract-${{ matrix.CLANG_TARGET }}/build/jextract/bin/jextract
-          chmod +x /tmp/deps/artifact/jextract-${{ matrix.CLANG_TARGET }}/build/jextract/bin/keytool
-          chmod +x /tmp/deps/artifact/jextract-${{ matrix.CLANG_TARGET }}/build/jextract/bin/serialver
-          export PATH=${PATH}:/tmp/deps/artifact/jextract-${{ matrix.CLANG_TARGET }}/build/jextract/bin
+          chmod +x /tmp/deps/artifact/jextract-linux-gnu-ubuntu-20.04/build/jextract/bin/java
+          chmod +x /tmp/deps/artifact/jextract-linux-gnu-ubuntu-20.04/build/jextract/bin/javac
+          chmod +x /tmp/deps/artifact/jextract-linux-gnu-ubuntu-20.04/build/jextract/bin/jextract
+          chmod +x /tmp/deps/artifact/jextract-linux-gnu-ubuntu-20.04/build/jextract/bin/keytool
+          chmod +x /tmp/deps/artifact/jextract-linux-gnu-ubuntu-20.04/build/jextract/bin/serialver
+          export PATH=${PATH}:/tmp/deps/artifact/jextract-linux-gnu-ubuntu-20.04/build/jextract/bin
           make deploy-jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
