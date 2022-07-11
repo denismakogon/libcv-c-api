@@ -23,37 +23,50 @@ jobs:
             TARGET: linux-gnu-ubuntu-20.04
             JAVA19_HOME: /tmp/deps/jdk-19
     steps:
+      - name: cache jextract binaries
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: /tmp/deps/jextract-${{ matrix.TARGET }}
+          key: jextract-${{ matrix.TARGET }}
       - name: 'Download JDK 19'
         id: download_jdk_19
+        if: ${{ steps.cache.outputs.cache-hit != 'true' }}
         uses: oracle-actions/setup-java@v1.1.1
         with:
           website: jdk.java.net
           release: 19
           install: false
       - name: 'Extract JDK 19'
+        if: ${{ steps.cache.outputs.cache-hit != 'true' }}
         shell: sh
         run: |
           mkdir -p /tmp/deps/jdk-19
           tar --strip-components=1 -xvf ${{ steps.download_jdk_19.outputs.archive }} -C /tmp/deps/jdk-19
           ls -lah /tmp/deps/jdk-19
       - name: 'Check Java 19 version'
+        if: ${{ steps.cache.outputs.cache-hit != 'true' }}
         shell: sh
         run: |
           ${{ matrix.JAVA19_HOME }}/bin/java --version
       - name: 'Setup Java 18'
+        if: ${{ steps.cache.outputs.cache-hit != 'true' }}
         uses: oracle-actions/setup-java@v1.1.1
         with:
           release: 18
       - name: 'Check default Java version'
+        if: ${{ steps.cache.outputs.cache-hit != 'true' }}
         shell: sh
         run: |
           java --version
           echo JAVA_HOME=$JAVA_HOME
       - name: 'Check Java 19 version'
+        if: ${{ steps.cache.outputs.cache-hit != 'true' }}
         shell: sh
         run: |
           ${{ matrix.JAVA19_HOME }}/bin/java --version
       - name: 'build jextract'
+        if: ${{ steps.cache.outputs.cache-hit != 'true' }}
         shell: sh
         run: |
           mkdir -p /tmp/deps
@@ -87,6 +100,16 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 1
+      - name: 'Download JDK 19'
+        id: download_jdk_19
+        uses: oracle-actions/setup-java@v1.1.1
+        with:
+          website: jdk.java.net
+          release: 19
+      - name: download JARs
+        uses: actions/download-artifact@v3
+        with:
+          path: /tmp/deps
       - name: Set up Homebrew
         id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@master
@@ -135,17 +158,12 @@ jobs:
         shell: bash
         run: |
           make test-suite suite=tests/test_drawing.cpp args="/tmp/YOLOv5/models/simplified.onnx tests/data/coco.names tests/data/cars-on-a-highway.jpeg"
-      - name: download JARs
-        uses: actions/download-artifact@v3
-        with:
-          path: /tmp/deps
-      - name: ls
-        shell: bash
-        run: |
-          ls -lah /tmp/deps
-          ls -lah /tmp/deps/artifact
-          ls -lah /tmp/deps/artifact/jextract-${{ matrix.CLANG_TARGET }}
-      - name: make archime
+#      - name: 'testing DNN on video API'
+#        shell: bash
+#        run: |
+#          /bin/bash scripts/compile-test.sh tests/test_dnn_on_video.cpp
+#          ./build/tests/test_dnn_on_video.cpp.binary /tmp/YOLOv5/models/simplified.onnx tests/data/coco.names tests/data/cars-passing-by.mp4 tests/data/cars-on-a-highway.jpeg
+      - name: make archive
         shell: bash
         run: |
           chmod +x /tmp/deps/artifact/jextract-${{ matrix.CLANG_TARGET }}/build/jextract/bin/java
@@ -155,8 +173,4 @@ jobs:
           chmod +x /tmp/deps/artifact/jextract-${{ matrix.CLANG_TARGET }}/build/jextract/bin/serialver
           export PATH=${PATH}:/tmp/deps/artifact/jextract-${{ matrix.CLANG_TARGET }}/build/jextract/bin
           make archive
-#      - name: 'testing DNN on video API'
-#        shell: bash
-#        run: |
-#          /bin/bash scripts/compile-test.sh tests/test_dnn_on_video.cpp
-#          ./build/tests/test_dnn_on_video.cpp.binary /tmp/YOLOv5/models/simplified.onnx tests/data/coco.names tests/data/cars-passing-by.mp4 tests/data/cars-on-a-highway.jpeg
+
