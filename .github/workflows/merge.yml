@@ -116,20 +116,10 @@ jobs:
           pkg-config --modversion opencv4
           pkg-config --modversion dlib-1
 
-      - name: 'compiling simplified up ONNX model'
-        shell: bash
-        run: |
-          /bin/bash scripts/compile-yolo-onnx.sh yolov5s
-
-      - name: 'run tests'
+      - name: make archive
         shell: bash
         env:
           IN_CI: "yes"
-        run: |
-          make test
-
-      - name: make archive
-        shell: bash
         run: |
           make archive-lib
 
