@@ -22,7 +22,7 @@ LIB_BINARY_ARCHIVE_NAME = $(LIBNAME).tar.gz
 LIB_SOURCES_ARCHIVE_NAME = libcv-c-api.src.tar.gz
 JAVA_SOURCES_DIR = $(BUILD_DIR)/src/main/java
 
-MAVEN_FLAGS = -Dversion=$(VERSION) -Dos=$(PLATFORM) -Darch=$(ARCH) -Dclassifiers=$(PLATFORM) -Dversion_no_dots=$(VERSION_NO_DOTS) -Dlib=$(LIB)
+MAVEN_FLAGS = -Dversion=$(VERSION) -Dos=$(PLATFORM) -Darch=$(ARCH) -Dversion_no_dots=$(VERSION_NO_DOTS) -Dlib=$(LIB)
 
 all: clean lib test
 
