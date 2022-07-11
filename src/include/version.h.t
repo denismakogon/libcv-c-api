@@ -11,7 +11,7 @@
 #ifndef version_h
 #define version_h
 
-char VERSION[10] = "latest";
+char VERSION[12] = "latest";
 
 int MAJOR = major;
 int MINOR = minor;
