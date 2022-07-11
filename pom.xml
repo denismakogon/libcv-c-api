@@ -32,7 +32,7 @@
 
     <build>
         <finalName>
-            ${project.artifactId}.${project.version}
+            ${project.artifactId}-${project.version}
         </finalName>
         <sourceDirectory>${src.dir}</sourceDirectory>
         <pluginManagement>

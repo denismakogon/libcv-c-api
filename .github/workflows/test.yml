@@ -3,6 +3,12 @@ name: Build and test
 on:
   pull_request:
     branches: [ main ]
+    paths:
+      - .github/workflows/test.yml
+      - src/*
+      - pom.xml
+      - Makefile
+      - scripts/*
 
 env:
   CLANG_LLVM_BASE_URL: "https://github.com/llvm/llvm-project/releases/download/llvmorg-13.0.0/clang+llvm-13.0.0-x86_64"
@@ -83,6 +89,7 @@ jobs:
         with:
           path: /tmp/deps/*
           if-no-files-found: error
+          retention-days: 1
 
   build-and-test:
     needs: build-jextract
@@ -173,4 +180,3 @@ jobs:
           chmod +x /tmp/deps/artifact/jextract-${{ matrix.CLANG_TARGET }}/build/jextract/bin/serialver
           export PATH=${PATH}:/tmp/deps/artifact/jextract-${{ matrix.CLANG_TARGET }}/build/jextract/bin
           make archive
-
