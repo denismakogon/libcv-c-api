@@ -14,20 +14,21 @@ env:
 
 
 jobs:
-  build-and-test:
+
+  build-jextract:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest]
+        os: [ macos-latest, ubuntu-latest ]
         include:
           - os: macos-latest
-            TARGET: macos
-            CLANG_TARGET: apple-darwin
+            TARGET: apple-darwin
             JAVA19_HOME: /tmp/deps/jdk-19/jdk-19.jdk/Contents/Home
-
+          - os: ubuntu-latest
+            TARGET: linux-gnu-ubuntu-20.04
+            JAVA19_HOME: /tmp/deps/jdk-19
 
     steps:
-
       - name: 'Download JDK 19'
         id: download_jdk_19
         uses: oracle-actions/setup-java@v1.1.1
@@ -35,51 +36,63 @@ jobs:
           website: jdk.java.net
           release: 19
           install: false
-        
       - name: 'Extract JDK 19'
         shell: sh
         run: |
           mkdir -p /tmp/deps/jdk-19
           tar --strip-components=1 -xvf ${{ steps.download_jdk_19.outputs.archive }} -C /tmp/deps/jdk-19
           ls -lah /tmp/deps/jdk-19
-
       - name: 'Check Java 19 version'
         shell: sh
         run: |
           ${{ matrix.JAVA19_HOME }}/bin/java --version
-
       - name: 'Setup Java 18'
         uses: oracle-actions/setup-java@v1.1.1
         with:
           release: 18
-
       - name: 'Check default Java version'
         shell: sh
         run: |
           java --version
           echo JAVA_HOME=$JAVA_HOME
-
-      - name: 'Check out repository'
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 1
-
       - name: 'Check Java 19 version'
         shell: sh
         run: |
-          java --version
-
+          ${{ matrix.JAVA19_HOME }}/bin/java --version
       - name: 'build jextract'
         shell: sh
         run: |
           mkdir -p /tmp/deps
-          mkdir -p /tmp/deps/jextract
+          mkdir -p /tmp/deps/jextract-${{ matrix.TARGET }}
           mkdir -p /tmp/deps/clang_llvm
-          wget -O /tmp/deps/LLVM.tar.gz ${{ env.CLANG_LLVM_BASE_URL }}-${{ matrix.CLANG_TARGET }}.${{ env.ARCHIVE_EXT }}
+          wget -O /tmp/deps/LLVM.tar.gz ${{ env.CLANG_LLVM_BASE_URL }}-${{ matrix.TARGET }}.${{ env.ARCHIVE_EXT }}
           tar --strip-components=1 -xvf /tmp/deps/LLVM.tar.gz -C /tmp/deps/clang_llvm
-          git clone https://github.com/openjdk/jextract.git /tmp/deps/jextract
-          cd /tmp/deps/jextract
+          git clone https://github.com/openjdk/jextract.git /tmp/deps/jextract-${{ matrix.TARGET }}
+          cd /tmp/deps/jextract-${{ matrix.TARGET }}
           sh ./gradlew -Pjdk19_home=${{ matrix.JAVA19_HOME }} -Pllvm_home=/tmp/deps/clang_llvm clean verify
+          rm -fr /tmp/deps/clang_llvm /tmp/deps/LLVM.tar.gz
+      - name: upload jextract-binary
+        uses: actions/upload-artifact@v3
+        with:
+          path: /tmp/deps/*
+          if-no-files-found: error
+
+  build-and-test:
+    needs: build-jextract
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ macos-latest ]
+        include:
+          - os: macos-latest
+            TARGET: macos
+            CLANG_TARGET: apple-darwin
+            JAVA19_HOME: /tmp/deps/jdk-19/jdk-19.jdk/Contents/Home
+    steps:
+      - name: 'Check out repository'
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
 
       - name: Set up Homebrew
         id: set-up-homebrew
@@ -103,12 +116,6 @@ jobs:
         shell: bash
         run: |
           /bin/bash scripts/compile-yolo-onnx.sh yolov5s
-
-      - name: 'package library'
-        shell: bash
-        run: |
-          export PATH=${PATH}:/tmp/deps/jextract/build/jextract/bin
-          make archive package=com.libcv
 
       - name: 'make lib'
         shell: bash
@@ -144,6 +151,23 @@ jobs:
         shell: bash
         run: |
           make test-suite suite=tests/test_drawing.cpp args="/tmp/YOLOv5/models/simplified.onnx tests/data/coco.names tests/data/cars-on-a-highway.jpeg"
+
+      - name: download JARs
+        uses: actions/download-artifact@v3
+        with:
+          path: /tmp/deps
+          
+      - name: ls
+        shell: bash
+        run: |
+          ls -lah /tmp/deps
+          ls -lah /tmp/deps/jextract-${{ matrix.CLANG_TARGET }}
+
+      - name: make archime
+        shell: bash
+        run: |
+          export PATH=${PATH}:/tmp/deps/jextract-${{ matrix.CLANG_TARGET }}/build/jextract/bin
+          make archive
 
 #      - name: 'testing DNN on video API'
 #        shell: bash

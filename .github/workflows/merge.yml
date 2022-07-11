@@ -9,7 +9,77 @@ on:
       - 'scripts/*'
 
 jobs:
-  build-merge-release:
+
+  build-jextract:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ macos-latest, ubuntu-latest ]
+        include:
+          - os: macos-latest
+            TARGET: apple-darwin
+            JAVA19_HOME: /tmp/deps/jdk-19/jdk-19.jdk/Contents/Home
+          - os: ubuntu-latest
+            TARGET: linux-gnu-ubuntu-20.04
+            JAVA19_HOME: /tmp/deps/jdk-19
+    steps:
+    # todo: add jextract binary caching
+      - name: 'Download JDK 19'
+        id: download_jdk_19
+        uses: oracle-actions/setup-java@v1.1.1
+        with:
+          website: jdk.java.net
+          release: 19
+          install: false
+        
+      - name: 'Extract JDK 19'
+        shell: sh
+        run: |
+          mkdir -p /tmp/deps/jdk-19
+          tar --strip-components=1 -xvf ${{ steps.download_jdk_19.outputs.archive }} -C /tmp/deps/jdk-19
+          ls -lah /tmp/deps/jdk-19
+
+      - name: 'Check Java 19 version'
+        shell: sh
+        run: |
+          ${{ matrix.JAVA19_HOME }}/bin/java --version
+
+      - name: 'Setup Java 18'
+        uses: oracle-actions/setup-java@v1.1.1
+        with:
+          release: 18
+
+      - name: 'Check default Java version'
+        shell: sh
+        run: |
+          java --version
+          echo JAVA_HOME=$JAVA_HOME
+
+      - name: 'Check Java 19 version'
+        shell: sh
+        run: |
+          ${{ matrix.JAVA19_HOME }}/bin/java --version
+
+      - name: 'build jextract'
+        shell: sh
+        run: |
+          mkdir -p /tmp/deps
+          mkdir -p /tmp/deps/jextract-${{ matrix.TARGET }}
+          mkdir -p /tmp/deps/clang_llvm
+          wget -O /tmp/deps/LLVM.tar.gz ${{ env.CLANG_LLVM_BASE_URL }}-${{ matrix.CLANG_TARGET }}.${{ env.ARCHIVE_EXT }}
+          tar --strip-components=1 -xvf /tmp/deps/LLVM.tar.gz -C /tmp/deps/clang_llvm
+          git clone https://github.com/openjdk/jextract.git /tmp/deps/jextract-${{ matrix.TARGET }}
+          cd /tmp/deps/jextract-${{ matrix.TARGET }}
+          sh ./gradlew -Pjdk19_home=${{ matrix.JAVA19_HOME }} -Pllvm_home=/tmp/deps/clang_llvm clean verify
+          rm -fr /tmp/deps/clang_llvm /tmp/deps/LLVM.tar.gz
+
+      - name: upload jextract-binary
+        uses: actions/upload-artifact@v3
+        with:
+          path: /tmp/deps/*
+          if-no-files-found: error
+
+  build-lib:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -58,12 +128,43 @@ jobs:
         run: |
           make test
 
-      - name: 'package'
+      - name: make archive
         shell: bash
-        env:
-          IN_CI: true
         run: |
-            make archive package=com.libcv
+          make archive-lib
+
+      - name: upload archive
+        uses: actions/upload-artifact@v3
+        with:
+          path: |
+             build/*.tar.gz
+          if-no-files-found: error
+
+  release:
+    runs-on: ubuntu-latest
+    needs: [build-jextract, build-lib]
+    steps:
+      - name: 'Check out repository'
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+      - name: download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: /tmp/deps
+      - name: 'Download JDK 19'
+        id: download_jdk_19
+        uses: oracle-actions/setup-java@v1.1.1
+        with:
+          website: jdk.java.net
+          release: 19
+
+      - name: Publish jar
+        run: |
+          export PATH=${PATH}:/tmp/deps/jextract-${{ matrix.CLANG_TARGET }}/build/jextract/bin
+          make deploy-jar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 'make a release'
         uses: marvinpinto/action-automatic-releases@latest
@@ -74,4 +175,5 @@ jobs:
           title: libcv-c-api ${{ steps.date.outputs.date }} release
           files: |
             LICENSE
-            build/*.tar.gz
+            target/*.jar
+            /tmp/deps/artifact/*.tar.gz
