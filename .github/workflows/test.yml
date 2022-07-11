@@ -3,15 +3,10 @@ name: Build and test
 on:
   pull_request:
     branches: [ main ]
-    paths:
-      - 'src/*'
-      - 'scripts/*'
-
 
 env:
   CLANG_LLVM_BASE_URL: "https://github.com/llvm/llvm-project/releases/download/llvmorg-13.0.0/clang+llvm-13.0.0-x86_64"
   ARCHIVE_EXT: "tar.xz"
-
 
 jobs:
 
@@ -27,7 +22,6 @@ jobs:
           - os: ubuntu-latest
             TARGET: linux-gnu-ubuntu-20.04
             JAVA19_HOME: /tmp/deps/jdk-19
-
     steps:
       - name: 'Download JDK 19'
         id: download_jdk_19
@@ -76,99 +70,99 @@ jobs:
         with:
           path: /tmp/deps/*
           if-no-files-found: error
-
-  build-and-test:
-    needs: build-jextract
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ macos-latest ]
-        include:
-          - os: macos-latest
-            TARGET: macos
-            CLANG_TARGET: apple-darwin
-            JAVA19_HOME: /tmp/deps/jdk-19/jdk-19.jdk/Contents/Home
-    steps:
-      - name: 'Check out repository'
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 1
-
-      - name: Set up Homebrew
-        id: set-up-homebrew
-        uses: Homebrew/actions/setup-homebrew@master
-        with:
-          test-bot: false
-
-      - name: 'install prerequisites'
-        shell: bash
-        run: |
-          brew install gcc
-          brew install opencv
-          brew install dlib
-          brew install pkg-config
-          brew link opencv
-          brew link dlib
-          pkg-config --modversion opencv4
-          pkg-config --modversion dlib-1
-
-      - name: 'compiling simplified up ONNX model'
-        shell: bash
-        run: |
-          /bin/bash scripts/compile-yolo-onnx.sh yolov5s
-
-      - name: 'make lib'
-        shell: bash
-        run: |
-          make lib -j$(nproc)
-
-      - name: 'testing files API'
-        shell: bash
-        run: |
-          make test-suite suite=tests/test_files.cpp args="tests/data/cars-on-a-highway.jpeg tests/data/cars-passing-by.mp4"
-
-      - name: 'testing etc API'
-        shell: bash
-        run: |
-          make test-suite suite=tests/test_etc.cpp
-
-      - name: 'testing image API'
-        shell: bash
-        run: |
-          make test-suite suite=tests/test_image.cpp args=tests/data/cars-on-a-highway.jpeg
-
-      - name: 'testing video API'
-        shell: bash
-        run: |
-          make test-suite suite=tests/test_video.cpp args="tests/data/cars-passing-by.mp4 tests/data/cars-on-a-highway.jpeg"
-
-      - name: 'testing DNN on image API'
-        shell: bash
-        run: |
-          make test-suite suite=tests/test_dnn_on_images.cpp args="/tmp/YOLOv5/models/simplified.onnx tests/data/coco.names tests/data/cars-on-a-highway.jpeg"
-
-      - name: 'testing drawing API'
-        shell: bash
-        run: |
-          make test-suite suite=tests/test_drawing.cpp args="/tmp/YOLOv5/models/simplified.onnx tests/data/coco.names tests/data/cars-on-a-highway.jpeg"
-
-      - name: download JARs
-        uses: actions/download-artifact@v3
-        with:
-          path: /tmp/deps
-          
-      - name: ls
-        shell: bash
-        run: |
-          ls -lah /tmp/deps
-          ls -lah /tmp/deps/jextract-${{ matrix.CLANG_TARGET }}
-
-      - name: make archime
-        shell: bash
-        run: |
-          export PATH=${PATH}:/tmp/deps/jextract-${{ matrix.CLANG_TARGET }}/build/jextract/bin
-          make archive
-
+#
+#  build-and-test:
+#    needs: build-jextract
+#    runs-on: ${{ matrix.os }}
+#    strategy:
+#      matrix:
+#        os: [ macos-latest ]
+#        include:
+#          - os: macos-latest
+#            TARGET: macos
+#            CLANG_TARGET: apple-darwin
+#            JAVA19_HOME: /tmp/deps/jdk-19/jdk-19.jdk/Contents/Home
+#    steps:
+#      - name: 'Check out repository'
+#        uses: actions/checkout@v3
+#        with:
+#          fetch-depth: 1
+#
+#      - name: Set up Homebrew
+#        id: set-up-homebrew
+#        uses: Homebrew/actions/setup-homebrew@master
+#        with:
+#          test-bot: false
+#
+#      - name: 'install prerequisites'
+#        shell: bash
+#        run: |
+#          brew install gcc
+#          brew install opencv
+#          brew install dlib
+#          brew install pkg-config
+#          brew link opencv
+#          brew link dlib
+#          pkg-config --modversion opencv4
+#          pkg-config --modversion dlib-1
+#
+#      - name: 'compiling simplified up ONNX model'
+#        shell: bash
+#        run: |
+#          /bin/bash scripts/compile-yolo-onnx.sh yolov5s
+#
+#      - name: 'make lib'
+#        shell: bash
+#        run: |
+#          make lib -j$(nproc)
+#
+#      - name: 'testing files API'
+#        shell: bash
+#        run: |
+#          make test-suite suite=tests/test_files.cpp args="tests/data/cars-on-a-highway.jpeg tests/data/cars-passing-by.mp4"
+#
+#      - name: 'testing etc API'
+#        shell: bash
+#        run: |
+#          make test-suite suite=tests/test_etc.cpp
+#
+#      - name: 'testing image API'
+#        shell: bash
+#        run: |
+#          make test-suite suite=tests/test_image.cpp args=tests/data/cars-on-a-highway.jpeg
+#
+#      - name: 'testing video API'
+#        shell: bash
+#        run: |
+#          make test-suite suite=tests/test_video.cpp args="tests/data/cars-passing-by.mp4 tests/data/cars-on-a-highway.jpeg"
+#
+#      - name: 'testing DNN on image API'
+#        shell: bash
+#        run: |
+#          make test-suite suite=tests/test_dnn_on_images.cpp args="/tmp/YOLOv5/models/simplified.onnx tests/data/coco.names tests/data/cars-on-a-highway.jpeg"
+#
+#      - name: 'testing drawing API'
+#        shell: bash
+#        run: |
+#          make test-suite suite=tests/test_drawing.cpp args="/tmp/YOLOv5/models/simplified.onnx tests/data/coco.names tests/data/cars-on-a-highway.jpeg"
+#
+#      - name: download JARs
+#        uses: actions/download-artifact@v3
+#        with:
+#          path: /tmp/deps
+#
+#      - name: ls
+#        shell: bash
+#        run: |
+#          ls -lah /tmp/deps
+#          ls -lah /tmp/deps/jextract-${{ matrix.CLANG_TARGET }}
+#
+#      - name: make archime
+#        shell: bash
+#        run: |
+#          export PATH=${PATH}:/tmp/deps/jextract-${{ matrix.CLANG_TARGET }}/build/jextract/bin
+#          make archive
+#
 #      - name: 'testing DNN on video API'
 #        shell: bash
 #        run: |
