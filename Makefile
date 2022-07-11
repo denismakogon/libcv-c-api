@@ -24,7 +24,7 @@ JAVA_SOURCES_DIR = $(BUILD_DIR)/src/main/java
 
 MAVEN_FLAGS = -Dversion=$(VERSION) -Dos=$(PLATFORM) -Darch=$(ARCH) -Dclassifiers=$(PLATFORM) -Dversion_no_dots=$(VERSION_NO_DOTS) -Dlib=$(LIB)
 
-all: clean lib test-files test-files test-image test-video test-dnn-on-images test-drawing
+all: clean lib test
 
 clean:
 	rm -fr $(BUILD_DIR)
