@@ -29,7 +29,7 @@ all: clean lib test
 clean:
 	rm -fr $(BUILD_DIR)
 
-lib: clean
+pre:
 	$(shell rm -fr $(BUILD_DIR))
 	$(shell mkdir -p $(BUILD_DIR)/include)
 	$(shell mkdir -p $(BUILD_DIR)/lib)
@@ -40,6 +40,7 @@ lib: clean
 	$(shell cp "src/include/data_types.h" $(BUILD_DIR)/include/data_types.h)
 	$(shell cp "src/include/version.h" $(BUILD_DIR)/include/version.h)
 
+lib: clean pre
 	$(CC) $(CFLAGS) -dynamiclib src/*.cpp -o $(LIB_FILE) -current_version $(VERSION) -compatibility_version $(VERSION)
 
 .PHONY: test-suite
@@ -70,8 +71,8 @@ archive-lib: lib
 
 archive: jar archive-sources archive-lib
 
-deploy-jar:
-	mvn deploy \
+deploy-jar: pre
+	mvn --batch-mode deploy \
 	  -DgroupId=clang \
 	  -DartifactId=libcv \
 	  -Dpackaging=jar \
