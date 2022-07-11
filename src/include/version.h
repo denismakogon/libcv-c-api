@@ -8,6 +8,6 @@
 #ifndef version_h
 #define version_h
 
-char VERSION[8] = "latest";
+char VERSION[10] = "latest";
 
 #endif /* version_h */
