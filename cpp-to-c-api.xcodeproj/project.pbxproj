@@ -31,8 +31,9 @@
 		AA9E4AB928758CC500207082 /* .github */ = {isa = PBXFileReference; lastKnownFileType = folder; path = .github; sourceTree = "<group>"; };
 		AA9E4ABA28758F9A00207082 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		AA9E4ABC2875DF6400207082 /* build */ = {isa = PBXFileReference; lastKnownFileType = folder; path = build; sourceTree = "<group>"; };
-		AA9E4ABD2875E72F00207082 /* install.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = install.sh; path = scripts/install.sh; sourceTree = "<group>"; };
 		AA9E4ABE2875F1C500207082 /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; path = src; sourceTree = "<group>"; };
+		AACFA469287B0D38003E1BC9 /* pom.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = pom.xml; sourceTree = "<group>"; };
+		AACFA46A287B5556003E1BC9 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,8 +50,9 @@
 		AA3A476B2865CB0E0030B49E = {
 			isa = PBXGroup;
 			children = (
+				AACFA46A287B5556003E1BC9 /* .gitignore */,
+				AACFA469287B0D38003E1BC9 /* pom.xml */,
 				AA9E4ABE2875F1C500207082 /* src */,
-				AA9E4ABD2875E72F00207082 /* install.sh */,
 				AA9E4ABC2875DF6400207082 /* build */,
 				AA9E4ABA28758F9A00207082 /* Makefile */,
 				AA9E4AB928758CC500207082 /* .github */,
@@ -304,7 +306,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				"HEADER_SEARCH_PATHS[arch=*]" = (
 					/usr/local/opt/opencv/include/opencv4,
-					"/Users/denismakogon/go/src/github.com/denismakogon/cpp-to-c-api",
+					"/Users/denismakogon/go/src/github.com/denismakogon/cpp-to-c-api/src",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
