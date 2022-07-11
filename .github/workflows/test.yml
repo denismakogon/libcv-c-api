@@ -64,7 +64,7 @@ jobs:
           git clone https://github.com/openjdk/jextract.git /tmp/deps/jextract-${{ matrix.TARGET }}
           cd /tmp/deps/jextract-${{ matrix.TARGET }}
           sh ./gradlew -Pjdk19_home=${{ matrix.JAVA19_HOME }} -Pllvm_home=/tmp/deps/clang_llvm clean verify
-          rm -fr /tmp/deps/clang_llvm /tmp/deps/LLVM.tar.gz /tmp/jdk-19
+          rm -fr /tmp/deps/clang_llvm /tmp/deps/LLVM.tar.gz /tmp/deps/jdk-19
       - name: upload jextract-binary
         uses: actions/upload-artifact@v3
         with:
@@ -148,6 +148,11 @@ jobs:
       - name: make archime
         shell: bash
         run: |
+          chmod +x /tmp/deps/artifact/jextract-${{ matrix.CLANG_TARGET }}/build/jextract/bin/java
+          chmod +x /tmp/deps/artifact/jextract-${{ matrix.CLANG_TARGET }}/build/jextract/bin/javac
+          chmod +x /tmp/deps/artifact/jextract-${{ matrix.CLANG_TARGET }}/build/jextract/bin/jextract
+          chmod +x /tmp/deps/artifact/jextract-${{ matrix.CLANG_TARGET }}/build/jextract/bin/keytool
+          chmod +x /tmp/deps/artifact/jextract-${{ matrix.CLANG_TARGET }}/build/jextract/bin/serialver
           export PATH=${PATH}:/tmp/deps/artifact/jextract-${{ matrix.CLANG_TARGET }}/build/jextract/bin
           make archive
 #      - name: 'testing DNN on video API'
